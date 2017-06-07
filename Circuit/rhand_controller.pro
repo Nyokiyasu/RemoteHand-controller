@@ -1,4 +1,4 @@
-update=2017/06/07 11:21:04
+update=2017/06/07 19:44:10
 version=1
 last_client=kicad
 [pcbnew]
@@ -27,7 +27,7 @@ NetIExt=net
 version=1
 [eeschema]
 version=1
-LibDir=
+LibDir=../../../../../../Program Files/KiCad/share/kicad
 [eeschema/libraries]
 LibName1=power
 LibName2=device
@@ -58,6 +58,4 @@ LibName26=opto
 LibName27=atmel
 LibName28=contrib
 LibName29=valves
-LibName30=robocon_sch
-LibName31=YASU
-LibName32=C:/Users/mito3/OneDrive/share/卒研/lib/Yasutoshi
+LibName30=User/YASU/YASU
