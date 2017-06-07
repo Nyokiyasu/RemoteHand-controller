@@ -1,4 +1,4 @@
-update=2017/06/06 23:03:12
+update=2017/06/07 11:21:04
 version=1
 last_client=kicad
 [pcbnew]
@@ -60,3 +60,4 @@ LibName28=contrib
 LibName29=valves
 LibName30=robocon_sch
 LibName31=YASU
+LibName32=C:/Users/mito3/OneDrive/share/卒研/lib/Yasutoshi
