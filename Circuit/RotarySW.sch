@@ -1,6 +1,5 @@
 EESchema Schematic File Version 2
 LIBS:power
-LIBS:device
 LIBS:transistors
 LIBS:conn
 LIBS:linear
@@ -28,7 +27,8 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-LIBS:Yasutoshi
+LIBS:YASU
+LIBS:device
 LIBS:rhand_controller-cache
 EELAYER 25 0
 EELAYER END

@@ -1,6 +1,5 @@
 EESchema Schematic File Version 2
 LIBS:power
-LIBS:device
 LIBS:transistors
 LIBS:conn
 LIBS:linear
@@ -28,13 +27,14 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-LIBS:Yasutoshi
+LIBS:YASU
+LIBS:device
 LIBS:rhand_controller-cache
 EELAYER 25 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 3 4
+Sheet 3 3
 Title ""
 Date ""
 Rev ""
