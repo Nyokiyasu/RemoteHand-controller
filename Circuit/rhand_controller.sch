@@ -27,7 +27,6 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-LIBS:YASU
 LIBS:device
 LIBS:rhand_controller-cache
 EELAYER 25 0
@@ -758,40 +757,40 @@ Wire Wire Line
 Wire Wire Line
 	3100 6200 3250 6200
 $Sheet
-S 1550 3750 950  400 
+S 1500 3950 950  400 
 U 593EB08A
 F0 "Arms" 60
 F1 "Arms.sch" 60
-F2 "LeftW" O L 1550 4050 60 
-F3 "LeftV" O L 1550 3950 60 
-F4 "LeftU" O L 1550 3850 60 
-F5 "RightU" O R 2500 3850 60 
-F6 "RightV" O R 2500 3950 60 
-F7 "RightW" O R 2500 4050 60 
+F2 "LeftW" O L 1500 4250 60 
+F3 "LeftV" O L 1500 4150 60 
+F4 "LeftU" O L 1500 4050 60 
+F5 "RightU" O R 2450 4050 60 
+F6 "RightV" O R 2450 4150 60 
+F7 "RightW" O R 2450 4250 60 
 $EndSheet
-Text Label 1250 3850 0    60   ~ 0
+Text Label 1200 4050 0    60   ~ 0
 LeftU
-Text Label 1250 3950 0    60   ~ 0
+Text Label 1200 4150 0    60   ~ 0
 LeftV
-Text Label 1250 4050 0    60   ~ 0
+Text Label 1200 4250 0    60   ~ 0
 LeftW
 Wire Wire Line
-	1250 3850 1550 3850
+	1200 4050 1500 4050
 Wire Wire Line
-	1250 3950 1550 3950
+	1200 4150 1500 4150
 Wire Wire Line
-	1250 4050 1550 4050
-Text Label 2900 3850 2    60   ~ 0
+	1200 4250 1500 4250
+Text Label 2850 4050 2    60   ~ 0
 RightV
-Text Label 2900 3950 2    60   ~ 0
+Text Label 2850 4150 2    60   ~ 0
 RightW
 Wire Wire Line
-	2500 3850 2900 3850
+	2450 4050 2850 4050
 Wire Wire Line
-	2500 3950 2900 3950
+	2450 4150 2850 4150
 Wire Wire Line
-	2900 4050 2500 4050
-Text Label 2900 4050 2    60   ~ 0
+	2850 4250 2450 4250
+Text Label 2850 4250 2    60   ~ 0
 RightU
 Wire Wire Line
 	2250 5200 2750 5200
