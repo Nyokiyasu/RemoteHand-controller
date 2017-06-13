@@ -27,7 +27,6 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-LIBS:YASU
 LIBS:device
 LIBS:rhand_controller-cache
 EELAYER 25 0
