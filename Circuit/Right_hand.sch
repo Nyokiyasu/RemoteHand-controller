@@ -29,6 +29,7 @@ LIBS:contrib
 LIBS:valves
 LIBS:YASU
 LIBS:device
+LIBS:robocon_sch
 LIBS:rhand_controller-cache
 EELAYER 25 0
 EELAYER END
