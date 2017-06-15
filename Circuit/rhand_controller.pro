@@ -1,4 +1,4 @@
-update=2017/06/11 23:29:41
+update=2017/06/13 16:41:31
 version=1
 last_client=kicad
 [pcbnew]
@@ -27,7 +27,7 @@ NetIExt=net
 version=1
 [eeschema]
 version=1
-LibDir=../../../../../../../software/KiCad/share/kicad/User
+LibDir=C:/Program Files/KiCad/share/kicad/User
 [eeschema/libraries]
 LibName1=power
 LibName2=transistors
