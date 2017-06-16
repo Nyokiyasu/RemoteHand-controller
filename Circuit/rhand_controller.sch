@@ -794,7 +794,7 @@ U 1 1 59414DD7
 P 2200 2400
 F 0 "U1" H 1850 3300 60  0000 C CNN
 F 1 "IM315TRX" H 2550 3300 60  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_2x13_Pitch1.27mm" H 1775 3175 60  0001 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_2x13_Pitch1.27mm_SMD" H 1775 3175 60  0001 C CNN
 F 3 "" H 1775 3175 60  0001 C CNN
 	1    2200 2400
 	1    0    0    -1  

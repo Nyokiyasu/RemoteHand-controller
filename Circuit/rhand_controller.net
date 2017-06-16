@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source C:/Users/mito3/Desktop/Robocon/RemoteHand-controller/Circuit/rhand_controller.sch)
-    (date "2017/06/15 15:59:28")
+    (date "2017/06/16 13:48:59")
     (tool "Eeschema 4.0.6")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -150,7 +150,7 @@
       (tstamp 593B4934))
     (comp (ref U1)
       (value IM315TRX)
-      (footprint Pin_Headers:Pin_Header_Straight_2x13_Pitch1.27mm)
+      (footprint Pin_Headers:Pin_Header_Straight_2x13_Pitch1.27mm_SMD)
       (libsource (lib YASU) (part IM315TRX))
       (sheetpath (names /) (tstamps /))
       (tstamp 59414DD7))
@@ -514,12 +514,12 @@
         (pin (num 1) (name 1) (type passive))
         (pin (num 2) (name 2) (type passive)))))
   (libraries
+    (library (logical conn)
+      (uri "C:\\Program Files\\KiCad\\share\\kicad\\library\\conn.lib"))
     (library (logical YASU)
       (uri "C:\\Program Files\\KiCad\\share\\kicad\\User\\YASU\\YASU.lib"))
     (library (logical device)
       (uri "C:\\Program Files\\KiCad\\share\\kicad\\library\\device.lib"))
-    (library (logical conn)
-      (uri "C:\\Program Files\\KiCad\\share\\kicad\\library\\conn.lib"))
     (library (logical rhand_controller-cache)
       (uri C:\Users\mito3\Desktop\Robocon\RemoteHand-controller\Circuit\rhand_controller-cache.lib)))
   (nets

@@ -740,9 +740,9 @@ Wire Wire Line
 	5950 2650 6250 2650
 Wire Wire Line
 	5950 2750 6250 2750
-Text Label 7600 2550 2    60   ~ 0
-RightV
 Text Label 7600 2650 2    60   ~ 0
+RightV
+Text Label 7600 2750 2    60   ~ 0
 RightW
 Wire Wire Line
 	7200 2550 7600 2550
@@ -750,7 +750,7 @@ Wire Wire Line
 	7200 2650 7600 2650
 Wire Wire Line
 	7600 2750 7200 2750
-Text Label 7600 2750 2    60   ~ 0
+Text Label 7600 2550 2    60   ~ 0
 RightU
 Wire Wire Line
 	2250 5200 2750 5200
