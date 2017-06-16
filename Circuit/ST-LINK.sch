@@ -27,8 +27,8 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-LIBS:YASU
 LIBS:device
+LIBS:robocon_sch
 LIBS:rhand_controller-cache
 EELAYER 25 0
 EELAYER END
@@ -91,7 +91,7 @@ U 1 1 593DD523
 P 2850 2800
 F 0 "R7" V 2930 2800 50  0000 C CNN
 F 1 "1k" V 2850 2800 50  0000 C CNN
-F 2 "Resistors_SMD:R_0603_HandSoldering" V 2780 2800 50  0001 C CNN
+F 2 "Resistors_ThroughHole:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 2780 2800 50  0001 C CNN
 F 3 "" H 2850 2800 50  0000 C CNN
 	1    2850 2800
 	1    0    0    -1  

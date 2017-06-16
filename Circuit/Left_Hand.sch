@@ -27,8 +27,8 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-LIBS:YASU
 LIBS:device
+LIBS:robocon_sch
 LIBS:rhand_controller-cache
 EELAYER 25 0
 EELAYER END
@@ -53,7 +53,7 @@ F 1 "CW" V 3900 3600 50  0000 C CNN
 F 2 "YASU:XA_2Pin" H 3800 3600 50  0001 C CNN
 F 3 "" H 3800 3600 50  0000 C CNN
 	1    3800 3600
-	-1   0    0    1   
+	-1   0    0    -1  
 $EndComp
 Wire Wire Line
 	4050 3450 4050 3550
@@ -106,7 +106,7 @@ F 1 "CCW" V 4750 3600 50  0000 C CNN
 F 2 "YASU:XA_2Pin" H 4650 3600 50  0001 C CNN
 F 3 "" H 4650 3600 50  0000 C CNN
 	1    4650 3600
-	-1   0    0    1   
+	-1   0    0    -1  
 $EndComp
 Wire Wire Line
 	4850 3550 5100 3550
@@ -161,7 +161,7 @@ F 1 "Wall" V 3800 5150 50  0000 C CNN
 F 2 "YASU:XA_2Pin" H 3700 5150 50  0001 C CNN
 F 3 "" H 3700 5150 50  0000 C CNN
 	1    3700 5150
-	-1   0    0    1   
+	-1   0    0    -1  
 $EndComp
 Wire Wire Line
 	3900 5100 4100 5100
@@ -216,7 +216,7 @@ F 1 "Enable" V 4700 5150 50  0000 C CNN
 F 2 "YASU:XA_2Pin" H 4600 5150 50  0001 C CNN
 F 3 "" H 4600 5150 50  0000 C CNN
 	1    4600 5150
-	-1   0    0    1   
+	-1   0    0    -1  
 $EndComp
 Wire Wire Line
 	4800 5100 5000 5100
