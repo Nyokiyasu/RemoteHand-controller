@@ -165,9 +165,9 @@ Text Label 2850 6000 0    60   ~ 0
 SWDIO
 Text Label 2850 6100 0    60   ~ 0
 SWCLK
-Text Label 10600 5300 2    60   ~ 0
+Text Label 2650 5000 0    60   ~ 0
 Blutooth_TXD
-Text Label 10600 5200 2    60   ~ 0
+Text Label 2650 4900 0    60   ~ 0
 Blutooth_RXD
 Text Label 3200 1150 0    60   ~ 0
 Blutooth_RXD
@@ -206,9 +206,9 @@ F 3 "" H 5450 1450 50  0000 C CNN
 	1    5450 1450
 	1    0    0    -1  
 $EndComp
-Text Label 2600 4900 0    60   ~ 0
+Text Label 10650 5200 2    60   ~ 0
 315MHz_RXD
-Text Label 2600 5000 0    60   ~ 0
+Text Label 10650 5300 2    60   ~ 0
 315MHz_TXD
 Text Label 2850 5700 0    60   ~ 0
 DSW_B0
@@ -284,9 +284,9 @@ Wire Wire Line
 Wire Wire Line
 	7900 1600 7900 1500
 Wire Wire Line
-	10000 5200 10600 5200
+	3250 4900 2650 4900
 Wire Wire Line
-	10000 5300 10600 5300
+	3250 5000 2650 5000
 Wire Wire Line
 	3200 1150 3850 1150
 Wire Wire Line
@@ -301,9 +301,9 @@ Connection ~ 5000 1250
 Wire Wire Line
 	4900 1150 5450 1150
 Wire Wire Line
-	2600 4900 3250 4900
+	10650 5200 10000 5200
 Wire Wire Line
-	2600 5000 3250 5000
+	10650 5300 10000 5300
 Wire Wire Line
 	1350 5700 3250 5700
 Wire Wire Line
@@ -526,7 +526,7 @@ U 1 1 5939354D
 P 2600 6600
 F 0 "R4" V 2680 6600 50  0000 C CNN
 F 1 "10k" V 2600 6600 50  0000 C CNN
-F 2 "Resistors_SMD:R_0603_HandSoldering" V 2530 6600 50  0001 C CNN
+F 2 "Resistors_ThroughHole:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 2530 6600 50  0001 C CNN
 F 3 "" H 2600 6600 50  0000 C CNN
 	1    2600 6600
 	1    0    0    -1  

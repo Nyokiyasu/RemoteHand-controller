@@ -79,7 +79,7 @@ U 1 1 593BE5AF
 P 4050 3300
 F 0 "R9" V 4130 3300 50  0000 C CNN
 F 1 "10k" V 4050 3300 50  0000 C CNN
-F 2 "Resistors_SMD:R_0603_HandSoldering" V 3980 3300 50  0001 C CNN
+F 2 "Resistors_ThroughHole:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 3980 3300 50  0001 C CNN
 F 3 "" H 4050 3300 50  0000 C CNN
 	1    4050 3300
 	1    0    0    -1  
@@ -134,7 +134,7 @@ U 1 1 593BE5D0
 P 4900 3300
 F 0 "R11" V 4980 3300 50  0000 C CNN
 F 1 "10k" V 4900 3300 50  0000 C CNN
-F 2 "Resistors_SMD:R_0603_HandSoldering" V 4830 3300 50  0001 C CNN
+F 2 "Resistors_ThroughHole:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 4830 3300 50  0001 C CNN
 F 3 "" H 4900 3300 50  0000 C CNN
 	1    4900 3300
 	1    0    0    -1  
@@ -189,7 +189,7 @@ U 1 1 593BE5F1
 P 3950 4850
 F 0 "R8" V 4030 4850 50  0000 C CNN
 F 1 "10k" V 3950 4850 50  0000 C CNN
-F 2 "Resistors_SMD:R_0603_HandSoldering" V 3880 4850 50  0001 C CNN
+F 2 "Resistors_ThroughHole:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 3880 4850 50  0001 C CNN
 F 3 "" H 3950 4850 50  0000 C CNN
 	1    3950 4850
 	1    0    0    -1  
@@ -244,7 +244,7 @@ U 1 1 593BE613
 P 4850 4850
 F 0 "R10" V 4930 4850 50  0000 C CNN
 F 1 "10k" V 4850 4850 50  0000 C CNN
-F 2 "Resistors_SMD:R_0603_HandSoldering" V 4780 4850 50  0001 C CNN
+F 2 "Resistors_ThroughHole:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 4780 4850 50  0001 C CNN
 F 3 "" H 4850 4850 50  0000 C CNN
 	1    4850 4850
 	1    0    0    -1  
