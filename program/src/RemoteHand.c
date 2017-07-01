@@ -43,7 +43,7 @@ int main(void)
 
 	while(1)
 	{
-
+//		USART_SendData();
 	}
 
 }
@@ -78,6 +78,7 @@ void Bluetooth_init(void)
 	GPIO_InitTypeDef init_gpio;
 	USART_InitTypeDef init_usart;
 //	USART_ClockInitTypeDef init_usartclock;
+
 	/*USART2*/
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
@@ -95,13 +96,29 @@ void Bluetooth_init(void)
 //	USART_ClockInit(USART2,init_usartclock);
 	USART_Cmd(USART2,ENABLE);
 
-
 	return;
 }
 void IM315RTX_init(void)
 {
+	GPIO_InitTypeDef init_gpio;
+	USART_InitTypeDef init_usart;
+
 	/*USART1*/
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
+
+	GPIO_StructInit(&init_gpio);
+	init_gpio.GPIO_Pin = GPIO_Pin_6|GPIO_Pin_7;	//1
+	init_gpio.GPIO_Mode = GPIO_Mode_AF;
+	GPIO_Init(GPIOB,&init_gpio);
+	GPIO_PinAFConfig(GPIOB,GPIO_PinSource6,GPIO_AF_0);
+	GPIO_PinAFConfig(GPIOB,GPIO_PinSource7,GPIO_AF_0);
+
+	USART_StructInit(&init_usart);
+	USART_Init(USART2,&init_usart);
+//	USART_ClockStructInit(&init_usartclock);
+//	USART_ClockInit(USART2,init_usartclock);
+	USART_Cmd(USART2,ENABLE);
 
 	return;
 }
