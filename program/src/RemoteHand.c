@@ -9,11 +9,9 @@
 */
 
 
+#include <RemoteHand.h>
 #include "stm32f0xx.h"
 
-
-void DipSW_init(void);
-uint8_t DipSW_read(void);
 
 int main(void)
 {
