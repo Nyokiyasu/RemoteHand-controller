@@ -18,7 +18,7 @@
 #define CONNECTCOMMAND4 "ATD00019509C400" /*class2*/
 #define CONNECTCOMMAND5 "ATD00019518A0DE" /*class2*/
 #define CONNECTCOMMAND6 "ATD00019518A0CD" /*class2*/
-#define CONNECTCOMMAND7 "ATD2016D8649BFB" /*伊藤のPCアドレス*/
+#define CONNECTCOMMAND7 "ATD2016D8649BFB" /*伊藤PCのBluetoothアドレス*/
 
 
 
@@ -29,6 +29,8 @@ uint8_t DipSW_read(void);
 
 void Bluetooth_init(void);
 void IM315RTX_init(void);
+
+void USART_SendString(uint8_t* data);
 
 
 #endif /* REMOTEHAND_H_ */

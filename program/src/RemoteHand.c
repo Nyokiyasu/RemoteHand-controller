@@ -98,6 +98,8 @@ void Bluetooth_init(void)
 
 	return;
 }
+
+
 void IM315RTX_init(void)
 {
 	GPIO_InitTypeDef init_gpio;
@@ -121,4 +123,13 @@ void IM315RTX_init(void)
 	USART_Cmd(USART2,ENABLE);
 
 	return;
+}
+
+void USART_SendString(uint8_t* data)
+{
+	while (*data)
+	{
+		USART_SendData(*data);
+		data++;
+	}
 }
