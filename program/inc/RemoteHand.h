@@ -27,10 +27,12 @@
 void DipSW_init(void);
 uint8_t DipSW_read(void);
 
-void Bluetooth_init(void);
+void Bluetooth_init(char* command);
 void IM315RTX_init(void);
 
-void USART_SendString(uint8_t* data);
+void USART_PutString(USART_TypeDef* USARTx,char* str);
+uint16_t USART_GetString(USART_TypeDef* USARTx,char* buff,uint16_t max);
 
+uint16_t coincidenceCheck(char *str1,char *str2,uint16_t num);
 
 #endif /* REMOTEHAND_H_ */
