@@ -14,7 +14,7 @@
 
 int main(void)
 {
-	/*Â§âÊï∞ÂÆöÁæ©*/
+	/*ïœêîíËã`*/
 	uint8_t mode;
 
 	DipSW_init();
@@ -56,31 +56,6 @@ int main(void)
 
 }
 
-void DipSW_init(void)
-{
-	GPIO_InitTypeDef init_gpio;
-
-	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
-
-	/*DipSW*/
-	GPIO_StructInit(&init_gpio);
-	init_gpio.GPIO_Pin = GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12;	//
-	init_gpio.GPIO_Mode = GPIO_Mode_IN;
-	GPIO_Init(GPIOA,&init_gpio);
-
-	return;
-
-}
-
-uint8_t DipSW_read(void)
-{
-	uint8_t data=0;
-	data = data|GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_10) << 0;
-	data = data|GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_11) << 1;
-	data = data|GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_12) << 2;
-	return data;
-}
-
 void Bluetooth_init(char* command)
 {
 	GPIO_InitTypeDef init_gpio;
@@ -102,7 +77,7 @@ void Bluetooth_init(char* command)
 	USART_Cmd(USART2,ENABLE);
 
 
-	USART_GetString(USART2,buff,128); /*"OK"„ÇíÂèó„Åë„Åü„ÅØ„Åö*/
+	USART_GetString(USART2,buff,128); /*"OK"ÇéÛÇØÇΩÇÕÇ∏*/
 	while (!coincidenceCheck(buff,"OK",2))
 	{
 		USART_GetString(USART2,buff,128);
@@ -145,8 +120,6 @@ void IM315RTX_init(void)
 
 	USART_StructInit(&init_usart);
 	USART_Init(USART2,&init_usart);
-//	USART_ClockStructInit(&init_usartclock);
-//	USART_ClockInit(USART2,init_usartclock);
 	USART_Cmd(USART2,ENABLE);
 
 	return;
@@ -156,16 +129,20 @@ void USART_PutString(USART_TypeDef* USARTx,char* str)
 {
 	while (*str)
 	{
-		USART_SendData(USARTx,*str);
+		USART_SendData(USARTx,(uint16_t)*str);
 		str++;
 	}
 }
 
+/*SCI3ÇÊÇËï∂éöóÒì¸óÕÅC[return]Ç™èIí[ÇæÇ™ÅC'\n'ÇÕéÊìæÇ≥ÇÍÇ»Ç¢*/
+/*éÊìæÇµÇΩï∂éöêîÇï‘Ç∑*/
+/*^HÇ≈ÉoÉbÉNÉXÉyÉCÉX*/
 uint16_t USART_GetString(USART_TypeDef* USARTx,char* buff,uint16_t max)
 {
 	uint16_t ch,i;
 
-	for (i=0;i<max-1;i++) {
+	for (i=0;i<max-1;i++)
+	{
 		ch=	USART_ReceiveData(USARTx);;
 		*buff=(char)ch;
 
@@ -173,14 +150,11 @@ uint16_t USART_GetString(USART_TypeDef* USARTx,char* buff,uint16_t max)
 			*buff=0;
 			return i+1;
 		}
-
 		if (*buff==0x8) {
 			buff-=2;
 			i-=2;
 		}
-		if (*buff!='\n'){
-		    buff++;
-		}
+		if (*buff!='\n') buff++;
 		else i--;
 	}
 	*buff=0;
@@ -198,4 +172,43 @@ uint16_t coincidenceCheck(char *str1,char *str2,uint16_t num)
 		}
 	}
 	return coincidence;
+}
+
+void IM315RTX_Put8Byte(char* str)
+{
+	uint16_t i;
+
+	USART_PutString(USART1,"TXDT ");
+	for (i=0;i<8;i++)
+	{
+		USART_SendData(USART1,(uint16_t)*str);
+		str++;
+	}
+	USART_PutString(USART1,"\r\n");
+
+}
+
+void DipSW_init(void)
+{
+	GPIO_InitTypeDef init_gpio;
+
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+
+	/*DipSW*/
+	GPIO_StructInit(&init_gpio);
+	init_gpio.GPIO_Pin = GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12;	//
+	init_gpio.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_Init(GPIOA,&init_gpio);
+
+	return;
+
+}
+
+uint8_t DipSW_read(void)
+{
+	uint8_t data=0;
+	data = data|GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_10) << 0;
+	data = data|GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_11) << 1;
+	data = data|GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_12) << 2;
+	return data;
 }
