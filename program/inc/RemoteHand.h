@@ -21,26 +21,37 @@
 #define CONNECTCOMMAND7 "ATD2016D8649BFB" /*ˆÉ“¡PC‚ÌBluetoothƒAƒhƒŒƒX*/
 
 
-
 void DipSW_init(void);
 uint8_t DipSW_read(void);
 
-void Bluetooth_init(char* command);
+void Switches_init(void);
 
+void Bluetooth_init(char* command);
 void IM315RTX_init(void);
 void IM315RTX_Put8Byte(char* str);
-
 void USART_PutString(USART_TypeDef* USARTx,char* str);
 uint16_t USART_GetString(USART_TypeDef* USARTx,char* buff,uint16_t max);
-
 uint16_t coincidenceCheck(char *str1,char *str2,uint16_t num);
 
+union{
+	struct{
+		uint8_t Right_Shoulder;
+		uint8_t Right_Elbow;
+		uint8_t Right_wrist;
+		uint8_t Left_Shoulder;
+		uint8_t Left_Elbow;
+		uint8_t Left_wrist;
+		uint8_t Joy_X		:4;
+		uint8_t Joy_Y		:4;
+		uint8_t Em_SW		:4;
+		uint8_t Reserved 	:2;
+		uint8_t CCW			:1;
+		uint8_t CW			:1;
+	};
+	uint8_t bytes[8];
+}Controller_t;
+
 #endif /* REMOTEHAND_H_ */
-
-
-
-
-
 
 
 

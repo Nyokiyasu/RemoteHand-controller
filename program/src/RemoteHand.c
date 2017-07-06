@@ -16,8 +16,10 @@ int main(void)
 {
 	/*•Ï”’è‹`*/
 	uint8_t mode;
+	Controller_t dataa;
 
 	DipSW_init();
+	Switches_init();
 	mode = DipSW_read();
 
 	IM315RTX_init();
@@ -211,4 +213,25 @@ uint8_t DipSW_read(void)
 	data = data|GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_11) << 1;
 	data = data|GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_12) << 2;
 	return data;
+}
+
+void Switches_init(void)
+{
+	GPIO_InitTypeDef init_gpio;
+
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
+
+	/*CW&CCW*/
+	GPIO_StructInit(&init_gpio);
+	init_gpio.GPIO_Pin = GPIO_Pin_8|GPIO_Pin_9;	//
+	init_gpio.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_Init(GPIOA,&init_gpio);
+	/*CW&CCW*/
+	GPIO_StructInit(&init_gpio);
+	init_gpio.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1;	//
+	init_gpio.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_Init(GPIOF,&init_gpio);
+
+	return;
 }
