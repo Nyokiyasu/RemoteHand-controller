@@ -16,7 +16,7 @@ int main(void)
 {
 	/*ïœêîíËã`*/
 	uint8_t mode;
-	Controller_t dataa;
+	RHC_t data;
 
 	DipSW_init();
 	Switches_init();
@@ -50,9 +50,10 @@ int main(void)
 		break;
 		}
 
-
 	while(1)
 	{
+		USART_PutString(USART2,"Hello world");
+		USART_PutString(USART2,"\r\n");
 //		USART_SendData();
 	}
 
@@ -79,7 +80,7 @@ void Bluetooth_init(char* command)
 	USART_Cmd(USART2,ENABLE);
 
 
-	USART_GetString(USART2,buff,128); /*"OK"ÇéÛÇØÇΩÇÕÇ∏*/
+/*	USART_GetString(USART2,buff,128); //"OK"ÇéÛÇØÇΩÇÕÇ∏
 	while (!coincidenceCheck(buff,"OK",2))
 	{
 		USART_GetString(USART2,buff,128);
@@ -98,11 +99,10 @@ void Bluetooth_init(char* command)
 	while (!coincidenceCheck(buff,"CONNECT",7))
 	{
 		USART_GetString(USART2,buff,128);
-	}
+	}*/
 
 	return;
 }
-
 
 void IM315RTX_init(void)
 {
@@ -121,6 +121,7 @@ void IM315RTX_init(void)
 	GPIO_PinAFConfig(GPIOB,GPIO_PinSource7,GPIO_AF_0);
 
 	USART_StructInit(&init_usart);
+	init_usart.USART_BaudRate = 38400;
 	USART_Init(USART2,&init_usart);
 	USART_Cmd(USART2,ENABLE);
 
@@ -131,6 +132,7 @@ void USART_PutString(USART_TypeDef* USARTx,char* str)
 {
 	while (*str)
 	{
+		while(USART_GetFlagStatus(USART2, USART_FLAG_TC) == RESET);
 		USART_SendData(USARTx,(uint16_t)*str);
 		str++;
 	}
@@ -145,7 +147,7 @@ uint16_t USART_GetString(USART_TypeDef* USARTx,char* buff,uint16_t max)
 
 	for (i=0;i<max-1;i++)
 	{
-		ch=	USART_ReceiveData(USARTx);;
+		ch=	USART_ReceiveData(USARTx);
 		*buff=(char)ch;
 
 		if (*buff=='\r'||ch<0) {
@@ -176,18 +178,18 @@ uint16_t coincidenceCheck(char *str1,char *str2,uint16_t num)
 	return coincidence;
 }
 
-void IM315RTX_Put8Byte(char* str)
+void IM315RTX_PutBytes(char* str,uint16_t num)
 {
 	uint16_t i;
-
-	USART_PutString(USART1,"TXDT ");
-	for (i=0;i<8;i++)
+	if (num == 0) return;
+	num = num-1;
+	for (i=0;i<num/8+1;i++)
 	{
-		USART_SendData(USART1,(uint16_t)*str);
-		str++;
+		USART_PutString(USART1,"TXDT ");
+		USART_PutString(USART1,(uint16_t)*str);
+		USART_PutString(USART1,"\r\n");
 	}
-	USART_PutString(USART1,"\r\n");
-
+	return;
 }
 
 void DipSW_init(void)
