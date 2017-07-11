@@ -80,7 +80,7 @@ void Bluetooth_init(char* command)
 	USART_Cmd(USART2,ENABLE);
 
 
-/*	USART_GetString(USART2,buff,128); //"OK"‚ðŽó‚¯‚½‚Í‚¸
+	USART_GetString(USART2,buff,128); //"OK"‚ðŽó‚¯‚½‚Í‚¸
 	while (!coincidenceCheck(buff,"OK",2))
 	{
 		USART_GetString(USART2,buff,128);
@@ -99,7 +99,7 @@ void Bluetooth_init(char* command)
 	while (!coincidenceCheck(buff,"CONNECT",7))
 	{
 		USART_GetString(USART2,buff,128);
-	}*/
+	}
 
 	return;
 }

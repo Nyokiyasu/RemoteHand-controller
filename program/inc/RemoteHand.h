@@ -20,12 +20,14 @@
 #define CONNECTCOMMAND6 "ATD00019518A0CD" /*class2*/
 #define CONNECTCOMMAND7 "ATD2016D8649BFB" /*伊藤PCのBluetoothアドレス*/
 
+#define RECV_RINGBUFF_SIZE 16
 
+/*プロトタイプ宣言 ==================================================== */
+/*DIO関係*/
 void DipSW_init(void);
 uint8_t DipSW_read(void);
-
 void Switches_init(void);
-
+/*USART関係*/
 void Bluetooth_init(char* command);
 void IM315RTX_init(void);
 void IM315RTX_PutBytes(char* str,uint16_t num);
@@ -33,6 +35,7 @@ void USART_PutString(USART_TypeDef* USARTx,char* str);
 uint16_t USART_GetString(USART_TypeDef* USARTx,char* buff,uint16_t max);
 uint16_t coincidenceCheck(char *str1,char *str2,uint16_t num);
 
+/*構造体定義 ==================================================== */
 typedef union {
 	struct {
 		uint8_t Right_Shoulder;
@@ -50,6 +53,18 @@ typedef union {
 	}sensor;
 	uint8_t bytes[8];
 }RHC_t;
+/* リングバッファ関係 */
+typedef struct
+{
+	/* ポインタ */
+	volatile int recvPtr_in;
+	volatile int recvPtr_out;
+	/* バッファ */
+	uint8_t buff[RECV_RINGBUFF_SIZE];
+} ringBuffer_t;
+
+/*グローバル変数 ==================================================== */
+static ringBuffer_t bluetooth_buffer, modular_buffer;
 
 #endif /* REMOTEHAND_H_ */
 
