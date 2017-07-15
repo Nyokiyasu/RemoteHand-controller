@@ -33,6 +33,7 @@ int main(void)
 
 	DipSW_init();
 	Switches_init();
+	ADC_init();
 	mode = DipSW_read();
 
 	SysTick_Config(48000);
@@ -343,7 +344,7 @@ int IM315TRX_SendRHCFrame(RHC_t *data)
 
 	IM315TRX_RecvString(&check,8);
 	if(CoincidenceCheck(&check,"OK",2))	return 0;
-	return -1;
+	else	return -1;
 }
 
 /* -------------------------------------------------
@@ -416,6 +417,27 @@ void Switches_init(void)
 	GPIO_Init(GPIOF,&init_gpio);
 
 	return;
+}
+
+void ADC_init(void)
+{
+	GPIO_InitTypeDef	GPIO_InitStructure;
+	ADC_InitTypeDef		ADC_InitStructure;
+
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+
+	GPIO_StructInit(&GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7;	//
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;
+	GPIO_Init(GPIOA,&GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1;	//
+	GPIO_Init(GPIOB,&GPIO_InitStructure);
+
+	ADC_StructInit(&ADC_InitStructure);
+	ADC_InitStructure.ADC_Resolution = ADC_Resolution_8b;
+	ADC_Init(ADC1,&ADC_InitStructure);
+	ADC_Cmd(ADC1,ENABLE);
 }
 
 /* -------------------------------------------------
