@@ -36,39 +36,39 @@ int main(void)
 	mode = DipSW_read();
 
 	SysTick_Config(48000);
-//	IM315TRX_USART_init();
+	IM315TRX_USART_init();
 	Bluetooth_USART_init();
 
-	switch(mode){
-	case 0:
-		Bluetooth_Module_init(CONNECTCOMMAND0);
-		break;
-	case 1:
-		Bluetooth_Module_init(CONNECTCOMMAND1);
-		break;
-	case 2:
-		Bluetooth_Module_init(CONNECTCOMMAND2);
-		break;
-	case 3:
-		Bluetooth_Module_init(CONNECTCOMMAND3);
-		break;
-	case 4:
-		Bluetooth_Module_init(CONNECTCOMMAND4);
-		break;
-	case 5:
-		Bluetooth_Module_init(CONNECTCOMMAND5);
-		break;
-	case 6:
-		Bluetooth_Module_init(CONNECTCOMMAND6);
-		break;
-	case 7:
-		Bluetooth_Module_init(CONNECTCOMMAND7);
-		break;
-		}
+//	switch(mode){
+//	case 0:
+//		Bluetooth_Module_init(CONNECTCOMMAND0);
+//		break;
+//	case 1:
+//		Bluetooth_Module_init(CONNECTCOMMAND1);
+//		break;
+//	case 2:
+//		Bluetooth_Module_init(CONNECTCOMMAND2);
+//		break;
+//	case 3:
+//		Bluetooth_Module_init(CONNECTCOMMAND3);
+//		break;
+//	case 4:
+//		Bluetooth_Module_init(CONNECTCOMMAND4);
+//		break;
+//	case 5:
+//		Bluetooth_Module_init(CONNECTCOMMAND5);
+//		break;
+//	case 6:
+//		Bluetooth_Module_init(CONNECTCOMMAND6);
+//		break;
+//	case 7:
+//		Bluetooth_Module_init(CONNECTCOMMAND7);
+//		break;
+//		}
 
 	while(1)
 	{
-		Bluetooth_SendString("Hello World\r\n");
+		IM315TRX_SendRHCFrame("12345678");
 	}
 
 }
@@ -113,12 +113,18 @@ void IM315TRX_USART_init(void)
 {
 	GPIO_InitTypeDef	GPIO_InitStructure;
 	USART_InitTypeDef	USART_InitStructure;
-	NVIC_InitTypeDef NVIC_InitStructure;
+	NVIC_InitTypeDef	NVIC_InitStructure;
 
-	/*USART1*/
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
 
+	/*busy*/
+	GPIO_StructInit(&GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_Init(GPIOB,&GPIO_InitStructure);
+
+	/*USART1*/
 	GPIO_StructInit(&GPIO_InitStructure);
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6|GPIO_Pin_7;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
@@ -322,6 +328,7 @@ void IM315TRX_SendString(char *str)
 int IM315TRX_SendRHCFrame(RHC_t *data)
 {
 	uint16_t i;
+	char check[8];
 	int time0;
 
 	time0 = SystemTimer_ms_Check();
@@ -333,7 +340,10 @@ int IM315TRX_SendRHCFrame(RHC_t *data)
 	IM315TRX_SendString("TXDT ");
 	for (i=0;i<8;i++)	IM315TRX_SendByte(data++->bytes[i]);
 	IM315TRX_SendString("\r\n");
-	return 0;
+
+	IM315TRX_RecvString(&check,8);
+	if(CoincidenceCheck(&check,"OK",2))	return 0;
+	return -1;
 }
 
 /* -------------------------------------------------
