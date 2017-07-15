@@ -21,10 +21,12 @@
 #define CONNECTCOMMAND7 "ATD2016D8649BFB" /*伊藤PCのBluetoothアドレス*/
 
 #define RECV_RINGBUFF_SIZE 16
-#define IM315RTX_RECV_TIMEOUT_MS 500
+#define IM315TRX_RECV_TIMEOUT_MS 500
+#define IM315TRX_SEND_TIMEOUT_MS 500
 #define BLUETOOTH_RECV_TIMEOUT_MS 500
 
 #define SystemTimer_ms_Check()		(gSystemTimer_ms)
+#define Busy_Check()				(GPIO_ReadOutputDataBit(GPIOB,GPIO_Pin_4))
 
 /*プロトタイプ宣言 ==================================================== */
 /*DIO関係*/
@@ -39,12 +41,12 @@ int	Bluetooth_RecvString(char *buf, int max);
 void Bluetooth_SendByte(uint8_t byte);
 void Bluetooth_SendString(char *str);
 
-void IM315RTX_USART_init(void);
-int	IM315RTX_RecvByte(void);
-int IM315RTX_RecvString (char *buf, int max);
-void IM315RTX_SendByte(uint8_t byte);
-void IM315RTX_SendString(char *str);
-void IM315RTX_SendFlame(char* str,uint16_t num);
+void IM315TRX_USART_init(void);
+int	IM315TRX_RecvByte(void);
+int IM315TRX_RecvString (char *buf, int max);
+void IM315TRX_SendByte(uint8_t byte);
+void IM315TRX_SendString(char *str);
+int IM315TRX_SendFlame(char* str,uint16_t num);
 
 uint16_t CoincidenceCheck(char *str1,char *str2,uint16_t num);
 

@@ -12,7 +12,7 @@
 #include <RemoteHand.h>
 
 /*グローバル変数 ==================================================== */
-static ringBuffer_t Bluetooth_buffer, IM315RTX_buffer;
+static ringBuffer_t Bluetooth_buffer, IM315TRX_buffer;
 // システムタイマ，1msごとに1ずつ増加する．
 int gSystemTimer_ms = 0;
 // delay関数のためのカウント値
@@ -36,7 +36,7 @@ int main(void)
 	mode = DipSW_read();
 
 	SysTick_Config(48000);
-//	IM315RTX_USART_init();
+//	IM315TRX_USART_init();
 	Bluetooth_USART_init();
 
 	switch(mode){
@@ -74,8 +74,8 @@ int main(void)
 }
 
 /* -------------------------------------------------
- * @関数名	:	Bluetooth_init,IM315RTX_init
- * @概要		:	Bluetooth,IM315RTXのUSARTを初期化する
+ * @関数名	:	Bluetooth_init,IM315TRX_init
+ * @概要		:	Bluetooth,IM315TRXのUSARTを初期化する
  * @引数		:	なし
  * @戻り値	:	なし
  * ---------------------------------------------- */
@@ -109,7 +109,7 @@ void Bluetooth_USART_init(void)
 
 	return;
 }
-void IM315RTX_USART_init(void)
+void IM315TRX_USART_init(void)
 {
 	GPIO_InitTypeDef	GPIO_InitStructure;
 	USART_InitTypeDef	USART_InitStructure;
@@ -142,8 +142,8 @@ void IM315RTX_USART_init(void)
 }
 
 /* -------------------------------------------------
- * @関数名		:	Bluetooth_init,IM315RTX_init
- * @概要			:	Bluetooth,IM315RTXのUSARTを初期化する
+ * @関数名		:	Bluetooth_init,IM315TRX_init
+ * @概要			:	Bluetooth,IM315TRXのUSARTを初期化する
  * @引数	-command:	通信相手の設定コマンド
  * @戻り値		:	なし
  * ---------------------------------------------- */
@@ -175,8 +175,8 @@ void Bluetooth_Module_init(char *command)
 }
 
 /* -------------------------------------------------
- * @関数名	:	Bluetooth_RecvByte, IM315RTX_RecvByte
- * @概要		:	Bluetooth, IM315RTXから1[Byte]の情報を受け取る
+ * @関数名	:	Bluetooth_RecvByte, IM315TRX_RecvByte
+ * @概要		:	Bluetooth, IM315TRXから1[Byte]の情報を受け取る
  * @引数		:	なし
  * @戻り値	:	受信したデータ
  * ---------------------------------------------- */
@@ -199,29 +199,29 @@ int Bluetooth_RecvByte(void)
 	}
 	return data;
 }
-int	IM315RTX_RecvByte(void)
+int	IM315TRX_RecvByte(void)
 {
 	int data;
 	int time0;
 
 	time0 = SystemTimer_ms_Check();
-	while(IM315RTX_buffer.recvPtr_in == IM315RTX_buffer.recvPtr_out)
+	while(IM315TRX_buffer.recvPtr_in == IM315TRX_buffer.recvPtr_out)
 	{
-		if((SystemTimer_ms_Check()-time0) > IM315RTX_RECV_TIMEOUT_MS)	return -1;
+		if((SystemTimer_ms_Check()-time0) > IM315TRX_RECV_TIMEOUT_MS)	return -1;
 	}
 
-	data = IM315RTX_buffer.buff[IM315RTX_buffer.recvPtr_out];
+	data = IM315TRX_buffer.buff[IM315TRX_buffer.recvPtr_out];
 
-	if(++IM315RTX_buffer.recvPtr_out == RECV_RINGBUFF_SIZE)
+	if(++IM315TRX_buffer.recvPtr_out == RECV_RINGBUFF_SIZE)
 	{
-		IM315RTX_buffer.recvPtr_out = 0;
+		IM315TRX_buffer.recvPtr_out = 0;
 	}
 	return data;
 }
 
 /* -------------------------------------------------
- * @関数名	:	Bluetooth_RecvString, IM315RTX_RecvString
- * @概要		:	Bluetooth, IM315RTXからmax[Byte]受け取り、
+ * @関数名	:	Bluetooth_RecvString, IM315TRX_RecvString
+ * @概要		:	Bluetooth, IM315TRXからmax[Byte]受け取り、
  * 				文字列として解釈する
  * @引数-buf	:	受け取った文字列の格納先
  *　          -max	:	文字列の長さ[Byte]
@@ -251,12 +251,12 @@ int	Bluetooth_RecvString(char *buf, int max)
 	*buf = 0;
 	return i+1;
 }
-int IM315RTX_RecvString (char *buf, int max)
+int IM315TRX_RecvString (char *buf, int max)
 {
 	int i;
 	for(i = 0; i < max-i; i++)
 	{
-		*buf = IM315RTX_RecvByte();
+		*buf = IM315TRX_RecvByte();
 
 		if(*buf == -1)	return -1;
 		if(*buf == '\r')
@@ -277,8 +277,8 @@ int IM315RTX_RecvString (char *buf, int max)
 }
 
 /* -------------------------------------------------
- * @関数名		:	Bluetooth_SendByte, IM315RTX_SendByte
- * @概要			:	Bluetooth, IM315RTXから1[Byte]送信する
+ * @関数名		:	Bluetooth_SendByte, IM315TRX_SendByte
+ * @概要			:	Bluetooth, IM315TRXから1[Byte]送信する
  * @引数-byte	:	送信する1[Byte]文字
  * @戻り値		:	なし
  * ---------------------------------------------- */
@@ -287,15 +287,15 @@ void Bluetooth_SendByte(uint8_t byte)
 	while (USART_GetFlagStatus(USART2, USART_FLAG_TC) == RESET);
 	USART_SendData(USART2, byte);
 }
-void IM315RTX_SendByte(uint8_t byte)
+void IM315TRX_SendByte(uint8_t byte)
 {
 	while (USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
 	USART_SendData(USART3, byte);
 }
 
 /* -------------------------------------------------
- * @関数名	:	Bluetooth_SendString, IM315RTX_SendString
- * @概要		:	Bluetooth, IM315RTXから文字列を送信する
+ * @関数名	:	Bluetooth_SendString, IM315TRX_SendString
+ * @概要		:	Bluetooth, IM315TRXから文字列を送信する
  * @引数-buf	:	送信する文字列
  * @戻り値	:	なし
  * ---------------------------------------------- */
@@ -306,27 +306,34 @@ void Bluetooth_SendString(char *str)
 		Bluetooth_SendByte(*str++);
 	}
 }
-void IM315RTX_SendString(char *str)
+void IM315TRX_SendString(char *str)
 {
 	while(*str)
 	{
-		IM315RTX_SendByte(*str++);
+		IM315TRX_SendByte(*str++);
 	}
 }
 
 /* -------------------------------------------------
- * @関数名		:IM315RTX_SendFlame
- * @概要			:
- * @引数-byte	:
- * @戻り値		:
+ * @関数名		:IM315TRX_SendFlame
+ * @概要			:IM315のフレームを送信する
+ * @引数-byte	:送信するデータ8[byte]のみ送信される
  * ---------------------------------------------- */
-void IM315RTX_SendRHCFrame(RHC_t *data)
+int IM315TRX_SendRHCFrame(RHC_t *data)
 {
 	uint16_t i;
-	IM315RTX_SendString("TXDT ");
-	for (i=0;i<8;i++)	IM315RTX_SendByte(data->bytes[i]);
-	IM315RTX_SendString("\r\n");
-	return;
+	int time0;
+
+	time0 = SystemTimer_ms_Check();
+	while(Busy_Check())
+	{
+		if((SystemTimer_ms_Check()-time0) > IM315TRX_SEND_TIMEOUT_MS)	return -1;
+	}
+
+	IM315TRX_SendString("TXDT ");
+	for (i=0;i<8;i++)	IM315TRX_SendByte(data++->bytes[i]);
+	IM315TRX_SendString("\r\n");
+	return 0;
 }
 
 /* -------------------------------------------------
@@ -410,10 +417,10 @@ void USART1_IRQHandler(void)
 	// 受信終了
 	if(USART_GetITStatus(USART1, USART_IT_RXNE) == SET)
 	{
-		IM315RTX_buffer.buff[IM315RTX_buffer.recvPtr_in] = USART_ReceiveData(USART1);
-		if(++IM315RTX_buffer.recvPtr_in == RECV_RINGBUFF_SIZE)
+		IM315TRX_buffer.buff[IM315TRX_buffer.recvPtr_in] = USART_ReceiveData(USART1);
+		if(++IM315TRX_buffer.recvPtr_in == RECV_RINGBUFF_SIZE)
 		{
-			IM315RTX_buffer.recvPtr_in = 0;
+			IM315TRX_buffer.recvPtr_in = 0;
 		}
 	}
 }
