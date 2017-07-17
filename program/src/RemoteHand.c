@@ -449,7 +449,7 @@ void ADC_init(void)
 {
 	GPIO_InitTypeDef	GPIO_InitStructure;
 	ADC_InitTypeDef		ADC_InitStructure;
-
+	DMA_InitTypeDef		DMA_InitStructure;
 
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
@@ -469,14 +469,24 @@ void ADC_init(void)
 	ADC_StructInit(&ADC_InitStructure);
 	ADC_InitStructure.ADC_Resolution = ADC_Resolution_8b;
 	ADC_Init(ADC1,&ADC_InitStructure);
-	ADC_ContinuousModeCmd();
+	ADC_ContinuousModeCmd(ADC1,ENABLE);
 //	ADC_ChannelConfig();
 	ADC_Cmd(ADC1,ENABLE);
 
 	/*DMAÇÃèâä˙âª*/
-	DMA_StructInit();
-	DMA_Init();
-	DMA_Cmd();
+	DMA_DeInit(DMA1_Channel1);
+	DMA_StructInit(&DMA_InitStructure);
+	DMA_InitStructure.DMA_PeripheralBaseAddr;
+	DMA_InitStructure.DMA_MemoryBaseAddr;
+	DMA_InitStructure.DMA_BufferSize;
+	DMA_InitStructure.DMA_MemoryInc =  DMA_MemoryInc_Enable;
+	DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
+	DMA_InitStructure.DMA_Priority = DMA_Priority_VeryHigh;
+	DMA_Init(DMA1_Channel1,&DMA_InitStructure);
+	DMA_SetCurrDataCounter(DMA1_Channel1,8);
+	//SyscinfigÇ≈DMAÇÃçƒîzíuÇÇµÇ»ÇØÇÍÇŒÇ¢ÇØÇ»Ç¢
+	SYSCFG_DMAChannelRemapConfig();
+	DMA_Cmd(DMA1_Channel1,ENABLE);
 	ADC_DMACmd(ADC1,ENABLE);
 
 

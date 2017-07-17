@@ -101,6 +101,4 @@ void delay_ms(int msec);
 //égÇ§Ç©Ç‡ÇµÇÍÇ»Ç¢ä÷êî
 /*ADC*/
 //ADC_GetConversionValue	Oneshot
-//ADC_ChannelConfig
 //ADC_OverrunModeCmd	Disable
-//ADC_DMACmd(ADC_TypeDef* ADCx, FunctionalState NewState)
