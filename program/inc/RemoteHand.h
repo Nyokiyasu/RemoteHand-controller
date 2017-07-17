@@ -100,22 +100,7 @@ void delay_ms(int msec);
 
 //égÇ§Ç©Ç‡ÇµÇÍÇ»Ç¢ä÷êî
 /*ADC*/
-//ADC_StartOfConversion
-//ADC_GetConversionValue
+//ADC_GetConversionValue	Oneshot
 //ADC_ChannelConfig
-//ADC_ContinuousModeCmd
-//ADC_DiscModeCmd
-//ADC_OverrunModeCmd
+//ADC_OverrunModeCmd	Disable
 //ADC_DMACmd(ADC_TypeDef* ADCx, FunctionalState NewState)
-//
-
-
-/*DMA*/
-//RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE)
-//DMA_Init()
-//DMA_Cmd()
-// DMA_StructInit
-//
-//
-//
-

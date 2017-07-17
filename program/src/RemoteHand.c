@@ -31,18 +31,16 @@ int main(void)
 	RCC_PLLCmd(ENABLE);
 	RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
 
-
-	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
-
 	/*初期化関数群*/
 	DipSW_init();
 	Switches_init();
-//	ADC_init();
+	ADC_init();
 	SysTick_Config(48000);	//systickTimerを1msに設定
 	IM315TRX_USART_init();
 	Bluetooth_USART_init();
 
 	mode = DipSW_read();
+
 	for (i=0;i<16;i++)	data.SendData[i] = 'A';
 	data.SendData[15] = 'F';
 
@@ -75,16 +73,16 @@ int main(void)
 
 	while(1)
 	{
-		Bluetooth_SendRHCFrame(&data);
-		IM315TRX_SendRHCFrame(&data);
+//		Bluetooth_SendRHCFrame(&data);
+//		IM315TRX_SendRHCFrame(&data);
 	}
 
 }
 
 /* -------------------------------------------------
  * @関数名	:	Bluetooth_init,IM315TRX_init
- * @概要		:	Bluetooth,IM315TRXのUSARTを初期化する
- * @引数		:	なし
+ * @概要	:	Bluetooth,IM315TRXのUSARTを初期化する
+ * @引数	:	なし
  * @戻り値	:	なし
  * ---------------------------------------------- */
 void Bluetooth_USART_init(void)
@@ -141,7 +139,7 @@ void IM315TRX_USART_init(void)
 	GPIO_PinAFConfig(GPIOB,GPIO_PinSource7,GPIO_AF_0);
 
 	USART_StructInit(&USART_InitStructure);
-	USART_InitStructure.USART_BaudRate = 9600;
+	USART_InitStructure.USART_BaudRate = 19200;
 	USART_Init(USART1,&USART_InitStructure);
 
 	NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
@@ -156,10 +154,10 @@ void IM315TRX_USART_init(void)
 }
 
 /* -------------------------------------------------
- * @関数名		:	Bluetooth_init,IM315TRX_init
+ * @関数名			:	Bluetooth_init,IM315TRX_init
  * @概要			:	Bluetooth,IM315TRXのUSARTを初期化する
- * @引数	-command:	通信相手の設定コマンド
- * @戻り値		:	なし
+ * @引数-command	:	通信相手の設定コマンド
+ * @戻り値			:	なし
  * ---------------------------------------------- */
 void Bluetooth_Module_init(char *command)
 {
@@ -189,10 +187,10 @@ void Bluetooth_Module_init(char *command)
 }
 
 /* -------------------------------------------------
- * @関数名	:	Bluetooth_RecvByte, IM315TRX_RecvByte
+ * @関数名		:	Bluetooth_RecvByte, IM315TRX_RecvByte
  * @概要		:	Bluetooth, IM315TRXから1[Byte]の情報を受け取る
  * @引数		:	なし
- * @戻り値	:	受信したデータ
+ * @戻り値		:	受信したデータ
  * ---------------------------------------------- */
 int Bluetooth_RecvByte(void)
 {
@@ -234,12 +232,12 @@ int	IM315TRX_RecvByte(void)
 }
 
 /* -------------------------------------------------
- * @関数名	:	Bluetooth_RecvString, IM315TRX_RecvString
+ * @関数名		:	Bluetooth_RecvString, IM315TRX_RecvString
  * @概要		:	Bluetooth, IM315TRXからmax[Byte]受け取り、
- * 				文字列として解釈する
+ * 					文字列として解釈する
  * @引数-buf	:	受け取った文字列の格納先
- *　          -max	:	文字列の長さ[Byte]
- * @戻り値	:	エラー
+ *      -max	:	文字列の長さ[Byte]
+ * @戻り値		:	エラー
  * ---------------------------------------------- */
 int	Bluetooth_RecvString(char *buf, int max)
 {
@@ -292,7 +290,7 @@ int IM315TRX_RecvString (char *buf, int max)
 
 /* -------------------------------------------------
  * @関数名		:	Bluetooth_SendByte, IM315TRX_SendByte
- * @概要			:	Bluetooth, IM315TRXから1[Byte]送信する
+ * @概要		:	Bluetooth, IM315TRXから1[Byte]送信する
  * @引数-byte	:	送信する1[Byte]文字
  * @戻り値		:	なし
  * ---------------------------------------------- */
@@ -308,10 +306,10 @@ void IM315TRX_SendByte(uint8_t byte)
 }
 
 /* -------------------------------------------------
- * @関数名	:	Bluetooth_SendString, IM315TRX_SendString
+ * @関数名		:	Bluetooth_SendString, IM315TRX_SendString
  * @概要		:	Bluetooth, IM315TRXから文字列を送信する
  * @引数-buf	:	送信する文字列
- * @戻り値	:	なし
+ * @戻り値		:	なし
  * ---------------------------------------------- */
 void Bluetooth_SendString(char *str)
 {
@@ -329,9 +327,9 @@ void IM315TRX_SendString(char *str)
 }
 
 /* -------------------------------------------------
- * @関数名		:Bluetooth_SendRHCFrame,IM315TRX_SendRHCFlame
- * @概要			:Bluetooth,IM315でRHCのデータフレームを送信する
- * @引数-byte	:送信するデータ(8[byte])
+ * @関数名		:	Bluetooth_SendRHCFrame,IM315TRX_SendRHCFlame
+ * @概要		:	Bluetooth,IM315でRHCのデータフレームを送信する
+ * @引数-byte	:	送信するデータ(8[byte])
  * ---------------------------------------------- */
 void Bluetooth_SendRHCFrame(RHC_t *data)
 {
@@ -362,10 +360,10 @@ int IM315TRX_SendRHCFrame(RHC_t *data)
 
 /* -------------------------------------------------
  * @関数名		:	CoincidenceCheck
- * @概要			:	numで指定した長さの2つの文字列を比較する
+ * @概要		:	numで指定した長さの2つの文字列を比較する
  * @引数-str1	:	比較する文字列1
  * @引数-str2	:	比較する文字列2
- * @引数-num		:	文字列の長さ
+ * @引数-num	:	文字列の長さ
  * @戻り値		:	成功or失敗
  * ---------------------------------------------- */
 uint16_t CoincidenceCheck(char *str1,char *str2,uint16_t num)
@@ -382,10 +380,9 @@ uint16_t CoincidenceCheck(char *str1,char *str2,uint16_t num)
 }
 
 /* -------------------------------------------------
- * @関数名		:
- * @概要			:
- * @引数			:
- * @戻り値		:
+ * @関数名		:	DipSW_init
+ * @概要		:	DipSWに使うGPIOの初期化
+ * @戻り値		:	なし
  * ---------------------------------------------- */
 void DipSW_init(void)
 {
@@ -402,6 +399,11 @@ void DipSW_init(void)
 	return;
 }
 
+/* -------------------------------------------------
+ * @関数名		:	DipSW_read
+ * @概要		:	DipSWの読出し
+ * @戻り値		:	なし
+ * ---------------------------------------------- */
 uint8_t DipSW_read(void)
 {
 	uint8_t data=0;
@@ -411,6 +413,11 @@ uint8_t DipSW_read(void)
 	return data;
 }
 
+/* -------------------------------------------------
+ * @関数名		:	Switches_init
+ * @概要		:	手元のスイッチの初期化
+ * @戻り値		:	なし
+ * ---------------------------------------------- */
 void Switches_init(void)
 {
 	GPIO_InitTypeDef init_gpio;
@@ -432,33 +439,53 @@ void Switches_init(void)
 	return;
 }
 
+/* -------------------------------------------------
+ * @関数名		:	ADC_init
+ * @概要		:	アナログセンサポートの初期化
+ * 				 	DMAを用いて連続モードで起動
+ * @戻り値		:	なし
+ * ---------------------------------------------- */
 void ADC_init(void)
 {
 	GPIO_InitTypeDef	GPIO_InitStructure;
 	ADC_InitTypeDef		ADC_InitStructure;
 
-	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
 
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA2, ENABLE);
+
+	/*GPIOの初期化*/
 	GPIO_StructInit(&GPIO_InitStructure);
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7;	//
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;
 	GPIO_Init(GPIOA,&GPIO_InitStructure);
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1;	//
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1;
 	GPIO_Init(GPIOB,&GPIO_InitStructure);
 
+	/*ADCの初期化*/
 	ADC_StructInit(&ADC_InitStructure);
 	ADC_InitStructure.ADC_Resolution = ADC_Resolution_8b;
 	ADC_Init(ADC1,&ADC_InitStructure);
-
-
-
+	ADC_ContinuousModeCmd();
+//	ADC_ChannelConfig();
 	ADC_Cmd(ADC1,ENABLE);
+
+	/*DMAの初期化*/
+	DMA_StructInit();
+	DMA_Init();
+	DMA_Cmd();
+	ADC_DMACmd(ADC1,ENABLE);
+
+
+	ADC_StartOfConversion(ADC1);
 }
 
 /* -------------------------------------------------
  * @関数名	:	USART1_IRQHandler, USART2_IRQHandler
- * @概要		:	USART1, USART2の受信割り込みルーチン
+ * @概要	:	USART1, USART2の受信割り込みルーチン
  * ---------------------------------------------- */
 void USART1_IRQHandler(void)
 {
@@ -486,10 +513,10 @@ void USART2_IRQHandler(void)
 	}
 }
 /* -------------------------------------------------
- * @関数名		:	SysTick_Handler
- * @概要			:	SystickTimerの割り込みルーチン
- * 					SysTick_Configで設定した値(frq)で割り込み周期が決まる
- * 					周期はSystemClock/frq[Hz]
+ * @関数名	:	SysTick_Handler
+ * @概要	:	SystickTimerの割り込みルーチン
+ * 				SysTick_Configで設定した値(frq)で割り込み周期が決まる
+ * 				周期はSystemClock/frq[Hz]
  * ---------------------------------------------- */
 void SysTick_Handler(void)
 {
@@ -499,7 +526,7 @@ void SysTick_Handler(void)
 
 /* -------------------------------------------------
  * @関数名		:	delay_ms
- * @概要			:	指定時間空ループをする．
+ * @概要		:	指定時間空ループをする．
  * 					SystemCMTを初期化せずに呼び出すと，
  * 					無限ループしてしまう．
  * @引数-msec	:	ループする時間[ms]
