@@ -485,7 +485,7 @@ void ADC_init(void)
 	DMA_Init(DMA1_Channel1,&DMA_InitStructure);
 	DMA_SetCurrDataCounter(DMA1_Channel1,8);
 	//SyscinfigÇ≈DMAÇÃçƒîzíuÇÇµÇ»ÇØÇÍÇŒÇ¢ÇØÇ»Ç¢
-	SYSCFG_DMAChannelRemapConfig();
+	SYSCFG_DMAChannelRemapConfsig();
 	DMA_Cmd(DMA1_Channel1,ENABLE);
 	ADC_DMACmd(ADC1,ENABLE);
 
