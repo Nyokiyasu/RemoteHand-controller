@@ -9,6 +9,7 @@
 #define REMOTEHAND_H_
 
 #include "stm32f0xx.h"
+//#include "stm32f0xx_conf.h"
 
 /*ATD+繋ぎたいBlueToothのアドレスを指定*/
 #define CONNECTCOMMAND0 "ATD00019508D9CC" /*class1*/
@@ -28,6 +29,40 @@
 #define SystemTimer_ms_Check()		(gSystemTimer_ms)
 #define Busy_Check()				(GPIO_ReadOutputDataBit(GPIOB,GPIO_Pin_4))
 
+
+/*構造体定義 ==================================================== */
+typedef struct {
+	union{
+		struct {
+			uint8_t Right_Shoulder;
+			uint8_t Right_Elbow;
+			uint8_t Right_wrist;
+			uint8_t Left_Shoulder;
+			uint8_t Left_Elbow;
+			uint8_t Left_wrist;
+			uint8_t Joy_X		:4;
+			uint8_t Joy_Y		:4;
+			uint8_t Em_SW		:4;
+			uint8_t Reserved 	:2;
+			uint8_t CCW			:1;
+			uint8_t CW			:1;
+		} Sepalate;
+		uint8_t bytes[8];
+	} SensorData;
+	uint8_t SendData[16];
+} RHC_t;
+
+/* リングバッファ関係 */
+typedef struct
+{
+	/* ポインタ */
+	volatile int recvPtr_in;
+	volatile int recvPtr_out;
+	/* バッファ */
+	uint8_t buff[RECV_RINGBUFF_SIZE];
+} ringBuffer_t;
+
+
 /*プロトタイプ宣言 ==================================================== */
 /*DIO関係*/
 void DipSW_init(void);
@@ -40,45 +75,21 @@ int Bluetooth_RecvByte(void);
 int	Bluetooth_RecvString(char *buf, int max);
 void Bluetooth_SendByte(uint8_t byte);
 void Bluetooth_SendString(char *str);
+void Bluetooth_SendRHCFrame(RHC_t *data);
 
 void IM315TRX_USART_init(void);
 int	IM315TRX_RecvByte(void);
 int IM315TRX_RecvString (char *buf, int max);
 void IM315TRX_SendByte(uint8_t byte);
 void IM315TRX_SendString(char *str);
-int IM315TRX_SendFlame(char* str,uint16_t num);
+int IM315TRX_SendRHCFrame(RHC_t *data);
 
 uint16_t CoincidenceCheck(char *str1,char *str2,uint16_t num);
 
+void ADC_init(void);
+
 void delay_ms(int msec);
 
-/*構造体定義 ==================================================== */
-typedef union {
-	struct {
-		uint8_t Right_Shoulder;
-		uint8_t Right_Elbow;
-		uint8_t Right_wrist;
-		uint8_t Left_Shoulder;
-		uint8_t Left_Elbow;
-		uint8_t Left_wrist;
-		uint8_t Joy_X		:4;
-		uint8_t Joy_Y		:4;
-		uint8_t Em_SW		:4;
-		uint8_t Reserved 	:2;
-		uint8_t CCW			:1;
-		uint8_t CW			:1;
-	}sensor;
-	uint8_t bytes[8];
-}RHC_t;
-/* リングバッファ関係 */
-typedef struct
-{
-	/* ポインタ */
-	volatile int recvPtr_in;
-	volatile int recvPtr_out;
-	/* バッファ */
-	uint8_t buff[RECV_RINGBUFF_SIZE];
-} ringBuffer_t;
 
 
 #endif /* REMOTEHAND_H_ */
@@ -88,6 +99,23 @@ typedef struct
 
 
 //使うかもしれない関数
-/*USART*/
-//	USART_ClockStructInit(&init_usartclock);
-//	USART_ClockInit(USART2,init_usartclock);
+/*ADC*/
+//ADC_StartOfConversion
+//ADC_GetConversionValue
+//ADC_ChannelConfig
+//ADC_ContinuousModeCmd
+//ADC_DiscModeCmd
+//ADC_OverrunModeCmd
+//ADC_DMACmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+//
+
+
+/*DMA*/
+//RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE)
+//DMA_Init()
+//DMA_Cmd()
+// DMA_StructInit
+//
+//
+//
+

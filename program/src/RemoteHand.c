@@ -24,52 +24,59 @@ int main(void)
 	/*変数定義*/
 	uint8_t mode;
 	RHC_t data;
+	uint8_t	i;
 
+	/*メインクロックの変更*/
 	RCC_PLLConfig(RCC_PLLSource_HSI_Div2,RCC_PLLMul_12);
 	RCC_PLLCmd(ENABLE);
 	RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
 
+
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
 
+	/*初期化関数群*/
 	DipSW_init();
 	Switches_init();
-	ADC_init();
-	mode = DipSW_read();
-
-	SysTick_Config(48000);
+//	ADC_init();
+	SysTick_Config(48000);	//systickTimerを1msに設定
 	IM315TRX_USART_init();
 	Bluetooth_USART_init();
 
-//	switch(mode){
-//	case 0:
-//		Bluetooth_Module_init(CONNECTCOMMAND0);
-//		break;
-//	case 1:
-//		Bluetooth_Module_init(CONNECTCOMMAND1);
-//		break;
-//	case 2:
-//		Bluetooth_Module_init(CONNECTCOMMAND2);
-//		break;
-//	case 3:
-//		Bluetooth_Module_init(CONNECTCOMMAND3);
-//		break;
-//	case 4:
-//		Bluetooth_Module_init(CONNECTCOMMAND4);
-//		break;
-//	case 5:
-//		Bluetooth_Module_init(CONNECTCOMMAND5);
-//		break;
-//	case 6:
-//		Bluetooth_Module_init(CONNECTCOMMAND6);
-//		break;
-//	case 7:
+	mode = DipSW_read();
+	for (i=0;i<16;i++)	data.SendData[i] = 'A';
+	data.SendData[15] = 'F';
+
+	switch(mode){
+	case 0:
+		Bluetooth_Module_init(CONNECTCOMMAND0);
+		break;
+	case 1:
+		Bluetooth_Module_init(CONNECTCOMMAND1);
+		break;
+	case 2:
+		Bluetooth_Module_init(CONNECTCOMMAND2);
+		break;
+	case 3:
+		Bluetooth_Module_init(CONNECTCOMMAND3);
+		break;
+	case 4:
+		Bluetooth_Module_init(CONNECTCOMMAND4);
+		break;
+	case 5:
+		Bluetooth_Module_init(CONNECTCOMMAND5);
+		break;
+	case 6:
+		Bluetooth_Module_init(CONNECTCOMMAND6);
+		break;
+	case 7:
 //		Bluetooth_Module_init(CONNECTCOMMAND7);
-//		break;
-//		}
+		break;
+		}
 
 	while(1)
 	{
-		IM315TRX_SendRHCFrame("12345678");
+		Bluetooth_SendRHCFrame(&data);
+		IM315TRX_SendRHCFrame(&data);
 	}
 
 }
@@ -134,7 +141,7 @@ void IM315TRX_USART_init(void)
 	GPIO_PinAFConfig(GPIOB,GPIO_PinSource7,GPIO_AF_0);
 
 	USART_StructInit(&USART_InitStructure);
-	USART_InitStructure.USART_BaudRate = 38400;
+	USART_InitStructure.USART_BaudRate = 9600;
 	USART_Init(USART1,&USART_InitStructure);
 
 	NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
@@ -296,8 +303,8 @@ void Bluetooth_SendByte(uint8_t byte)
 }
 void IM315TRX_SendByte(uint8_t byte)
 {
-	while (USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
-	USART_SendData(USART3, byte);
+	while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET);
+	USART_SendData(USART1, byte);
 }
 
 /* -------------------------------------------------
@@ -322,10 +329,15 @@ void IM315TRX_SendString(char *str)
 }
 
 /* -------------------------------------------------
- * @関数名		:IM315TRX_SendFlame
- * @概要			:IM315のフレームを送信する
- * @引数-byte	:送信するデータ8[byte]のみ送信される
+ * @関数名		:Bluetooth_SendRHCFrame,IM315TRX_SendRHCFlame
+ * @概要			:Bluetooth,IM315でRHCのデータフレームを送信する
+ * @引数-byte	:送信するデータ(8[byte])
  * ---------------------------------------------- */
+void Bluetooth_SendRHCFrame(RHC_t *data)
+{
+	uint8_t i;
+	for (i=0;i<16;i++)	Bluetooth_SendByte(data->SendData[i]);
+}
 int IM315TRX_SendRHCFrame(RHC_t *data)
 {
 	uint16_t i;
@@ -339,12 +351,13 @@ int IM315TRX_SendRHCFrame(RHC_t *data)
 	}
 
 	IM315TRX_SendString("TXDT ");
-	for (i=0;i<8;i++)	IM315TRX_SendByte(data++->bytes[i]);
+	for (i=0;i<16;i++)	IM315TRX_SendByte(data->SendData[i]);
 	IM315TRX_SendString("\r\n");
 
-	IM315TRX_RecvString(&check,8);
-	if(CoincidenceCheck(&check,"OK",2))	return 0;
-	else	return -1;
+//	IM315TRX_RecvString(check,8);
+//	if(CoincidenceCheck(check,"OK",2))	return 0;
+//	else	return -1;
+	return 0;
 }
 
 /* -------------------------------------------------
@@ -437,6 +450,9 @@ void ADC_init(void)
 	ADC_StructInit(&ADC_InitStructure);
 	ADC_InitStructure.ADC_Resolution = ADC_Resolution_8b;
 	ADC_Init(ADC1,&ADC_InitStructure);
+
+
+
 	ADC_Cmd(ADC1,ENABLE);
 }
 
@@ -455,6 +471,7 @@ void USART1_IRQHandler(void)
 			IM315TRX_buffer.recvPtr_in = 0;
 		}
 	}
+
 }
 void USART2_IRQHandler(void)
 {
