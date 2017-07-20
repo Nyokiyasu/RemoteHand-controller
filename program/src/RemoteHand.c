@@ -461,7 +461,6 @@ void ADC_init(void)
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
-	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA2, ENABLE);
 
 	/*GPIOの初期化*/
 	GPIO_StructInit(&GPIO_InitStructure);
@@ -471,40 +470,41 @@ void ADC_init(void)
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1;
 	GPIO_Init(GPIOB,&GPIO_InitStructure);
 
-	/*ADCの初期化*/
-	ADC_StructInit(&ADC_InitStructure);
-	ADC_InitStructure.ADC_Resolution = ADC_Resolution_8b;
-	ADC_Init(ADC1,&ADC_InitStructure);
-	ADC_ContinuousModeCmd(ADC1,ENABLE);
-//	ADC_ChannelConfig();
-
-	ADC_ChannelConfig(ADC1, ADC_Channel_0 , ADC_SampleTime_55_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_1 , ADC_SampleTime_55_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_4 , ADC_SampleTime_55_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_5 , ADC_SampleTime_55_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_6 , ADC_SampleTime_55_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_7 , ADC_SampleTime_55_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_8 , ADC_SampleTime_55_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_9 , ADC_SampleTime_55_5Cycles);
-
 	/*DMAの初期化*/
+	//SyscinfigでDMAの再配置をしなければいけない
+	SYSCFG_DMAChannelRemapConfig(SYSCFG_DMARemap_ADC1,ENABLE);
 	DMA_DeInit(DMA1_Channel1);
 	DMA_StructInit(&DMA_InitStructure);
 	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&ADC1->DR;
 	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)&ADC_value[0];
+	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
 	DMA_InitStructure.DMA_BufferSize = 8;
 	DMA_InitStructure.DMA_MemoryInc =  DMA_MemoryInc_Enable;
 	DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
 	DMA_InitStructure.DMA_Priority = DMA_Priority_VeryHigh;
 	DMA_Init(DMA1_Channel1,&DMA_InitStructure);
 	DMA_SetCurrDataCounter(DMA1_Channel1,8);
-	//SyscinfigでDMAの再配置をしなければいけない
-	SYSCFG_DMAChannelRemapConfig(SYSCFG_DMARemap_ADC1,ENABLE);
-
 	DMA_Cmd(DMA1_Channel1,ENABLE);
+
+	/*ADCの初期化*/
+	ADC_StructInit(&ADC_InitStructure);
+	ADC_InitStructure.ADC_Resolution = ADC_Resolution_8b;
+	ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;
+	ADC_Init(ADC1,&ADC_InitStructure);
+//	ADC_ContinuousModeCmd(ADC1,ENABLE);
+
+	ADC_ChannelConfig(ADC1, ADC_Channel_0 , ADC_SampleTime_41_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_1 , ADC_SampleTime_41_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_4 , ADC_SampleTime_41_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_5 , ADC_SampleTime_41_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_6 , ADC_SampleTime_41_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_7 , ADC_SampleTime_41_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_8 , ADC_SampleTime_41_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_9 , ADC_SampleTime_41_5Cycles);
+
+	ADC_DMARequestModeConfig(ADC1,ADC_DMAMode_Circular);
 	ADC_DMACmd(ADC1,ENABLE);
 	ADC_Cmd(ADC1,ENABLE);
-
 
 	ADC_StartOfConversion(ADC1);
 }
