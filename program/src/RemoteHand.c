@@ -13,10 +13,16 @@
 
 /*グローバル変数 ==================================================== */
 static ringBuffer_t Bluetooth_buffer, IM315TRX_buffer;
+
 // システムタイマ，1msごとに1ずつ増加する．
 int gSystemTimer_ms = 0;
+
 // delay関数のためのカウント値
 static int timingDelay_ms;
+
+//ADCの変換結果がDMAによって代入される
+//JoyX,Y,LeftU,V,W,RightU,V,Wの順番に格納されている
+uint8_t ADC_value[8];
 
 
 int main(void)
@@ -41,8 +47,8 @@ int main(void)
 
 	mode = DipSW_read();
 
-	for (i=0;i<16;i++)	data.SendData[i] = 'A';
-	data.SendData[15] = 'F';
+	data.SendData[0] = 'A';
+	data.SendData[1] = 'F';
 
 	switch(mode){
 	case 0:
@@ -73,8 +79,11 @@ int main(void)
 
 	while(1)
 	{
+		data.SensorData.bytes[0] = ADC_value[4];
+		data.SendData[0] = FourBit2Ascii[data.SensorData.half_byte[0].higher];
+		data.SendData[1] = FourBit2Ascii[data.SensorData.half_byte[0].lower];
 //		Bluetooth_SendRHCFrame(&data);
-//		IM315TRX_SendRHCFrame(&data);
+		IM315TRX_SendRHCFrame(&data);
 	}
 
 }
@@ -445,53 +454,63 @@ void Switches_init(void)
  * 				 	DMAを用いて連続モードで起動
  * @戻り値		:	なし
  * ---------------------------------------------- */
-//void ADC_init(void)
-//{
-//	GPIO_InitTypeDef	GPIO_InitStructure;
-//	ADC_InitTypeDef		ADC_InitStructure;
-//	DMA_InitTypeDef		DMA_InitStructure;
-//
-//	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
-//	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
-//	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
-//	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
-//	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA2, ENABLE);
-//
-//	/*GPIOの初期化*/
-//	GPIO_StructInit(&GPIO_InitStructure);
-//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7;	//
-//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;
-//	GPIO_Init(GPIOA,&GPIO_InitStructure);
-//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1;
-//	GPIO_Init(GPIOB,&GPIO_InitStructure);
-//
-//	/*ADCの初期化*/
-//	ADC_StructInit(&ADC_InitStructure);
-//	ADC_InitStructure.ADC_Resolution = ADC_Resolution_8b;
-//	ADC_Init(ADC1,&ADC_InitStructure);
+void ADC_init(void)
+{
+	GPIO_InitTypeDef	GPIO_InitStructure;
+	ADC_InitTypeDef		ADC_InitStructure;
+	DMA_InitTypeDef		DMA_InitStructure;
+
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+
+	/*GPIOの初期化*/
+	GPIO_StructInit(&GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7;	//
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;
+	GPIO_Init(GPIOA,&GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1;
+	GPIO_Init(GPIOB,&GPIO_InitStructure);
+
+	/*DMAの初期化*/
+	//SyscinfigでDMAの再配置をしなければいけない
+	SYSCFG_DMAChannelRemapConfig(SYSCFG_DMARemap_ADC1,ENABLE);
+	DMA_DeInit(DMA1_Channel1);
+	DMA_StructInit(&DMA_InitStructure);
+	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&ADC1->DR;
+	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)&ADC_value[0];
+	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
+	DMA_InitStructure.DMA_BufferSize = 8;
+	DMA_InitStructure.DMA_MemoryInc =  DMA_MemoryInc_Enable;
+	DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
+	DMA_InitStructure.DMA_Priority = DMA_Priority_VeryHigh;
+	DMA_Init(DMA1_Channel1,&DMA_InitStructure);
+	DMA_SetCurrDataCounter(DMA1_Channel1,8);
+	DMA_Cmd(DMA1_Channel1,ENABLE);
+
+	/*ADCの初期化*/
+	ADC_StructInit(&ADC_InitStructure);
+	ADC_InitStructure.ADC_Resolution = ADC_Resolution_8b;
+	ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;
+	ADC_Init(ADC1,&ADC_InitStructure);
 //	ADC_ContinuousModeCmd(ADC1,ENABLE);
-////	ADC_ChannelConfig();
-//	ADC_Cmd(ADC1,ENABLE);
-//
-//	/*DMAの初期化*/
-//	DMA_DeInit(DMA1_Channel1);
-//	DMA_StructInit(&DMA_InitStructure);
-//	DMA_InitStructure.DMA_PeripheralBaseAddr;
-//	DMA_InitStructure.DMA_MemoryBaseAddr;
-//	DMA_InitStructure.DMA_BufferSize;
-//	DMA_InitStructure.DMA_MemoryInc =  DMA_MemoryInc_Enable;
-//	DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
-//	DMA_InitStructure.DMA_Priority = DMA_Priority_VeryHigh;
-//	DMA_Init(DMA1_Channel1,&DMA_InitStructure);
-//	DMA_SetCurrDataCounter(DMA1_Channel1,8);
-//	//SyscinfigでDMAの再配置をしなければいけない
-//	SYSCFG_DMAChannelRemapConfsig();
-//	DMA_Cmd(DMA1_Channel1,ENABLE);
-//	ADC_DMACmd(ADC1,ENABLE);
-//
-//
-//	ADC_StartOfConversion(ADC1);
-//}
+
+	ADC_ChannelConfig(ADC1, ADC_Channel_0 , ADC_SampleTime_41_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_1 , ADC_SampleTime_41_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_4 , ADC_SampleTime_41_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_5 , ADC_SampleTime_41_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_6 , ADC_SampleTime_41_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_7 , ADC_SampleTime_41_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_8 , ADC_SampleTime_41_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_9 , ADC_SampleTime_41_5Cycles);
+
+	ADC_DMARequestModeConfig(ADC1,ADC_DMAMode_Circular);
+	ADC_DMACmd(ADC1,ENABLE);
+	ADC_Cmd(ADC1,ENABLE);
+
+	ADC_StartOfConversion(ADC1);
+}
 
 /* -------------------------------------------------
  * @関数名	:	USART1_IRQHandler, USART2_IRQHandler
