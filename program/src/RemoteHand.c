@@ -47,8 +47,8 @@ int main(void)
 
 	mode = DipSW_read();
 
-	for (i=0;i<16;i++)	data.SendData[i] = 'A';
-	data.SendData[15] = 'F';
+	data.SendData[0] = 'A';
+	data.SendData[1] = 'F';
 
 	switch(mode){
 	case 0:
@@ -79,8 +79,11 @@ int main(void)
 
 	while(1)
 	{
+		data.SensorData.bytes[0] = ADC_value[4];
+		data.SendData[0] = FourBit2Ascii[data.SensorData.half_byte[0].higher];
+		data.SendData[1] = FourBit2Ascii[data.SensorData.half_byte[0].lower];
 //		Bluetooth_SendRHCFrame(&data);
-//		IM315TRX_SendRHCFrame(&data);
+		IM315TRX_SendRHCFrame(&data);
 	}
 
 }

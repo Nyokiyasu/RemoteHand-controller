@@ -48,6 +48,10 @@ typedef struct {
 			uint8_t CW			:1;
 		} Sepalate;
 		uint8_t bytes[8];
+		struct{
+			uint8_t lower	: 4;
+			uint8_t higher	: 4;
+		}half_byte[8];
 	} SensorData;
 	uint8_t SendData[16];
 } RHC_t;
@@ -62,6 +66,7 @@ typedef struct
 	uint8_t buff[RECV_RINGBUFF_SIZE];
 } ringBuffer_t;
 
+char FourBit2Ascii[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
 
 /*プロトタイプ宣言 ==================================================== */
 /*DIO関係*/
