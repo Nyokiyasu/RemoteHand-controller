@@ -13,10 +13,16 @@
 
 /*グローバル変数 ==================================================== */
 static ringBuffer_t Bluetooth_buffer, IM315TRX_buffer;
+
 // システムタイマ，1msごとに1ずつ増加する．
 int gSystemTimer_ms = 0;
+
 // delay関数のためのカウント値
 static int timingDelay_ms;
+
+//ADCの変換結果がDMAによって代入される
+//JoyX,Y,LeftU,V,W,RightU,V,Wの順番に格納されている
+uint8_t ADC_value[8];
 
 
 int main(void)
@@ -471,23 +477,33 @@ void ADC_init(void)
 	ADC_Init(ADC1,&ADC_InitStructure);
 	ADC_ContinuousModeCmd(ADC1,ENABLE);
 //	ADC_ChannelConfig();
-	ADC_Cmd(ADC1,ENABLE);
+
+	ADC_ChannelConfig(ADC1, ADC_Channel_0 , ADC_SampleTime_55_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_1 , ADC_SampleTime_55_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_4 , ADC_SampleTime_55_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_5 , ADC_SampleTime_55_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_6 , ADC_SampleTime_55_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_7 , ADC_SampleTime_55_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_8 , ADC_SampleTime_55_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_9 , ADC_SampleTime_55_5Cycles);
 
 	/*DMAの初期化*/
 	DMA_DeInit(DMA1_Channel1);
 	DMA_StructInit(&DMA_InitStructure);
-	DMA_InitStructure.DMA_PeripheralBaseAddr;
-	DMA_InitStructure.DMA_MemoryBaseAddr;
-	DMA_InitStructure.DMA_BufferSize;
+	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&ADC1->DR;
+	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)&ADC_value[0];
+	DMA_InitStructure.DMA_BufferSize = 8;
 	DMA_InitStructure.DMA_MemoryInc =  DMA_MemoryInc_Enable;
 	DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
 	DMA_InitStructure.DMA_Priority = DMA_Priority_VeryHigh;
 	DMA_Init(DMA1_Channel1,&DMA_InitStructure);
 	DMA_SetCurrDataCounter(DMA1_Channel1,8);
 	//SyscinfigでDMAの再配置をしなければいけない
-	SYSCFG_DMAChannelRemapConfsig();
+	SYSCFG_DMAChannelRemapConfig(SYSCFG_DMARemap_ADC1,ENABLE);
+
 	DMA_Cmd(DMA1_Channel1,ENABLE);
 	ADC_DMACmd(ADC1,ENABLE);
+	ADC_Cmd(ADC1,ENABLE);
 
 
 	ADC_StartOfConversion(ADC1);
