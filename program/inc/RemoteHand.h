@@ -19,7 +19,7 @@
 #define CONNECTCOMMAND4 "ATD00019509C400" /*class2*/
 #define CONNECTCOMMAND5 "ATD00019518A0DE" /*class2*/
 #define CONNECTCOMMAND6 "ATD00019518A0CD" /*class2*/
-#define CONNECTCOMMAND7 "ATD2016D8649BFB" /*ˆÉ“¡PC‚ÌBluetoothƒAƒhƒŒƒX*/
+#define CONNECTCOMMAND7
 
 #define RECV_RINGBUFF_SIZE 16
 #define IM315TRX_RECV_TIMEOUT_MS 500
@@ -87,7 +87,6 @@ char FourBit2Ascii[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D',
 void DipSW_init(void);
 uint8_t DipSW_read(void);
 void Switches_init(void);
-uint8_t Check_EmSW(void);
 /*USARTŠÖŒW*/
 void Bluetooth_USART_init(void);
 void Bluetooth_Module_init(char* command);
@@ -107,9 +106,10 @@ uint16_t CoincidenceCheck(char *str1,char *str2,uint16_t num);
 void ADC_init(void);
 /*Timer*/
 void delay_ms(int msec);
-
+/*SensorData*/
 void GetSensorData(RHC_t *data);
 void Conv4Bit2Ascii(RHC_t *data);
+uint8_t Check_EmSW(void);
 
 
 

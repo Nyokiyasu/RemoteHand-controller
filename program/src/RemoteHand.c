@@ -69,7 +69,6 @@ int main(void)
 		Bluetooth_Module_init(CONNECTCOMMAND6);
 		break;
 	case 7:
-//		Bluetooth_Module_init(CONNECTCOMMAND7);
 		break;
 		}
 
@@ -429,9 +428,9 @@ void Switches_init(void)
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOF, ENABLE);
 
-	/*CW&CCW*/
+	/*CW&CCW&EmSW*/
 	GPIO_StructInit(&init_gpio);
-	init_gpio.GPIO_Pin = GPIO_Pin_8|GPIO_Pin_9;	//
+	init_gpio.GPIO_Pin = GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_15;	//
 	init_gpio.GPIO_Mode = GPIO_Mode_IN;
 	GPIO_Init(GPIOA,&init_gpio);
 	/*Enable&Wall*/
