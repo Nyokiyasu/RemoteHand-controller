@@ -30,7 +30,6 @@ int main(void)
 	/*変数定義*/
 	uint8_t mode;
 	RHC_t data;
-	uint8_t	i;
 
 	/*メインクロックの変更*/
 	RCC_PLLConfig(RCC_PLLSource_HSI_Div2,RCC_PLLMul_12);
@@ -40,15 +39,12 @@ int main(void)
 	/*初期化関数群*/
 	DipSW_init();
 	Switches_init();
-//	ADC_init();
+	ADC_init();
 	SysTick_Config(48000);	//systickTimerを1msに設定
 	IM315TRX_USART_init();
 	Bluetooth_USART_init();
 
 	mode = DipSW_read();
-
-	data.SendData[0] = 'A';
-	data.SendData[1] = 'F';
 
 	switch(mode){
 	case 0:
@@ -79,10 +75,9 @@ int main(void)
 
 	while(1)
 	{
-		data.SensorData.bytes[0] = ADC_value[4];
-		data.SendData[0] = FourBit2Ascii[data.SensorData.half_byte[0].higher];
-		data.SendData[1] = FourBit2Ascii[data.SensorData.half_byte[0].lower];
-//		Bluetooth_SendRHCFrame(&data);
+		GetSensorData(&data);
+		Conv4Bit2Ascii(&data);
+		Bluetooth_SendRHCFrame(&data);
 		IM315TRX_SendRHCFrame(&data);
 	}
 
@@ -343,7 +338,7 @@ void IM315TRX_SendString(char *str)
 void Bluetooth_SendRHCFrame(RHC_t *data)
 {
 	uint8_t i;
-	for (i=0;i<16;i++)	Bluetooth_SendByte(data->SendData[i]);
+	for (i=0;i<8;i++)	Bluetooth_SendByte(data->SensorData.Bytes[i]);
 }
 int IM315TRX_SendRHCFrame(RHC_t *data)
 {
@@ -352,7 +347,7 @@ int IM315TRX_SendRHCFrame(RHC_t *data)
 	int time0;
 
 	time0 = SystemTimer_ms_Check();
-	while(Busy_Check())
+	while(Check_Busy())
 	{
 		if((SystemTimer_ms_Check()-time0) > IM315TRX_SEND_TIMEOUT_MS)	return -1;
 	}
@@ -510,6 +505,39 @@ void ADC_init(void)
 	ADC_Cmd(ADC1,ENABLE);
 
 	ADC_StartOfConversion(ADC1);
+}
+
+void GetSensorData(RHC_t *data)
+{
+	data->SensorData.Sepalate.Right_Shoulder= ADC_value[R_SHOULDER_NUM];
+	data->SensorData.Sepalate.Right_Elbow	= ADC_value[R_ELBOW_NUM];
+	data->SensorData.Sepalate.Right_wrist	= ADC_value[R_WRIST_NUM];
+	data->SensorData.Sepalate.Left_Shoulder	= ADC_value[L_SHOULDER_NUM];
+	data->SensorData.Sepalate.Left_Elbow	= ADC_value[L_ELBOW_NUM];
+	data->SensorData.Sepalate.Left_wrist	= ADC_value[L_WRIST_NUM];
+	data->SensorData.Sepalate.Joy_X			= ADC_value[JOY_X_NUM]>>4;
+	data->SensorData.Sepalate.Joy_X			= ADC_value[JOY_X_NUM]>>4;
+	data->SensorData.Sepalate.Wall			= Check_wall();
+	data->SensorData.Sepalate.CCW			= Check_ccw();
+	data->SensorData.Sepalate.CW			= Check_cw();
+	data->SensorData.Sepalate.EmSW			= Check_EmSW();
+}
+
+uint8_t Check_EmSW(void)
+{
+	if(GPIO_ReadOutputDataBit(GPIOA,GPIO_Pin_15))	return (uint8_t)0xF;
+	else	return (uint8_t)0x0;
+}
+
+void Conv4Bit2Ascii(RHC_t *data)
+{
+	uint8_t i;
+
+	for(i=0;i<8;i++)
+	{
+		data->SendData[i*2]		= FourBit2Ascii[data->SensorData.HalfBytes[i].Lower];
+		data->SendData[i*2+1]	= FourBit2Ascii[data->SensorData.HalfBytes[i].Higher];
+	}
 }
 
 /* -------------------------------------------------
