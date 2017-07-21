@@ -39,7 +39,7 @@ int main(void)
 	/*初期化関数群*/
 	DipSW_init();
 	Switches_init();
-	ADC_init();
+	ADCPort_init();
 	SysTick_Config(48000);	//systickTimerを1msに設定
 	IM315TRX_USART_init();
 	Bluetooth_USART_init();
@@ -74,8 +74,11 @@ int main(void)
 
 	while(1)
 	{
-		GetSensorData(&data);
-		Conv4Bit2Ascii(&data);
+		if(!Check_Enable())
+		{
+			GetSensorData(&data);
+			Conv4Bit2Ascii(&data);
+		}
 		Bluetooth_SendRHCFrame(&data);
 		IM315TRX_SendRHCFrame(&data);
 	}
@@ -448,7 +451,7 @@ void Switches_init(void)
  * 				 	DMAを用いて連続モードで起動
  * @戻り値		:	なし
  * ---------------------------------------------- */
-void ADC_init(void)
+void ADCPort_init(void)
 {
 	GPIO_InitTypeDef	GPIO_InitStructure;
 	ADC_InitTypeDef		ADC_InitStructure;
@@ -519,14 +522,8 @@ void GetSensorData(RHC_t *data)
 	data->SensorData.Sepalate.Wall			= Check_wall();
 	data->SensorData.Sepalate.CCW			= Check_ccw();
 	data->SensorData.Sepalate.CW			= Check_cw();
-	data->SensorData.Sepalate.EmSW			= Check_EmSW();
 }
 
-uint8_t Check_EmSW(void)
-{
-	if(GPIO_ReadOutputDataBit(GPIOA,GPIO_Pin_15))	return (uint8_t)0xF;
-	else	return (uint8_t)0x0;
-}
 
 void Conv4Bit2Ascii(RHC_t *data)
 {

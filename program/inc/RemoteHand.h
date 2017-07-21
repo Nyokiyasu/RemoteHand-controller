@@ -38,10 +38,12 @@
 
 
 #define SystemTimer_ms_Check()		(gSystemTimer_ms)
-#define Check_Busy()	(GPIO_ReadOutputDataBit(GPIOB,GPIO_Pin_4))
-#define Check_ccw()		(GPIO_ReadOutputDataBit(GPIOA,GPIO_Pin_9))
-#define Check_cw()		(GPIO_ReadOutputDataBit(GPIOA,GPIO_Pin_8))
-#define Check_wall()	(GPIO_ReadOutputDataBit(GPIOF,GPIO_Pin_0))
+#define Check_Busy()	(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_4))
+#define Check_ccw()		(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_9))
+#define Check_cw()		(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_8))
+#define Check_wall()	(GPIO_ReadInputDataBit(GPIOF,GPIO_Pin_0))
+#define Check_Enable()	(GPIO_ReadInputDataBit(GPIOF,GPIO_Pin_0))
+#define Check_EmSW()	(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_15))
 /*ç\ë¢ëÃíËã` ==================================================== */
 typedef struct {
 	union{
@@ -54,8 +56,7 @@ typedef struct {
 			uint8_t Left_wrist;
 			uint8_t Joy_X		:4;
 			uint8_t Joy_Y		:4;
-			uint8_t EmSW		:4;
-			uint8_t Reserved 	:1;
+			uint8_t Reserved 	:5;
 			uint8_t Wall		:1;
 			uint8_t CCW			:1;
 			uint8_t CW			:1;
@@ -103,13 +104,12 @@ void IM315TRX_SendString(char *str);
 int IM315TRX_SendRHCFrame(RHC_t *data);
 uint16_t CoincidenceCheck(char *str1,char *str2,uint16_t num);
 /*ADC*/
-void ADC_init(void);
+void ADCPort_init(void);
 /*Timer*/
 void delay_ms(int msec);
 /*SensorData*/
 void GetSensorData(RHC_t *data);
 void Conv4Bit2Ascii(RHC_t *data);
-uint8_t Check_EmSW(void);
 
 
 
