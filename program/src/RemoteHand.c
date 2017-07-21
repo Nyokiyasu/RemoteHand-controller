@@ -31,7 +31,7 @@ int main(void)
 	uint8_t mode;
 	RHC_t data;
 
-	/*メインクロックの変更*/
+	/*メインクロックを8MHzから48MHzへ変更*/
 	RCC_PLLConfig(RCC_PLLSource_HSI_Div2,RCC_PLLMul_12);
 	RCC_PLLCmd(ENABLE);
 	RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
@@ -515,7 +515,7 @@ void GetSensorData(RHC_t *data)
 	data->SensorData.Sepalate.Left_Elbow	= ADC_value[L_ELBOW_NUM];
 	data->SensorData.Sepalate.Left_wrist	= ADC_value[L_WRIST_NUM];
 	data->SensorData.Sepalate.Joy_X			= ADC_value[JOY_X_NUM]>>4;
-	data->SensorData.Sepalate.Joy_X			= ADC_value[JOY_X_NUM]>>4;
+	data->SensorData.Sepalate.Joy_Y			= ADC_value[JOY_Y_NUM]>>4;
 	data->SensorData.Sepalate.Wall			= Check_wall();
 	data->SensorData.Sepalate.CCW			= Check_ccw();
 	data->SensorData.Sepalate.CW			= Check_cw();
