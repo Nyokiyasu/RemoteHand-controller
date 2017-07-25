@@ -19,7 +19,7 @@
 #define CONNECTCOMMAND4 "ATD00019509C400" /*class2*/
 #define CONNECTCOMMAND5 "ATD00019518A0DE" /*class2*/
 #define CONNECTCOMMAND6 "ATD00019518A0CD" /*class2*/
-#define CONNECTCOMMAND7
+#define CONNECTCOMMAND7	//–³‚µ
 
 #define RECV_RINGBUFF_SIZE 16
 #define IM315TRX_RECV_TIMEOUT_MS 500
@@ -27,12 +27,12 @@
 #define BLUETOOTH_RECV_TIMEOUT_MS 500
 
 //R‚Æ‚k‚ÍŽb’è
-#define R_SHOULDER_NUM	2
-#define R_ELBOW_NUM		3
-#define R_WRIST_NUM		4
-#define L_SHOULDER_NUM	5
-#define L_ELBOW_NUM		6
-#define L_WRIST_NUM		7
+#define R_SHOULDER_NUM	RU
+#define R_ELBOW_NUM		RV
+#define R_WRIST_NUM		RW
+#define L_SHOULDER_NUM	LU
+#define L_ELBOW_NUM		LV
+#define L_WRIST_NUM		LW
 #define	JOY_X_NUM		0
 #define JOY_Y_NUM		1
 
@@ -76,6 +76,7 @@ typedef struct {
 	} SensorData;
 	uint8_t SendData[16];
 } RHC_t;
+
 
 
 /* ƒŠƒ“ƒOƒoƒbƒtƒ@ŠÖŒW */
