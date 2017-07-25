@@ -36,6 +36,13 @@
 #define	JOY_X_NUM		0
 #define JOY_Y_NUM		1
 
+#define RU	5
+#define RV	6
+#define RW	7
+#define LU	2
+#define LV	3
+#define LW	4
+
 
 #define SystemTimer_ms_Check()		(gSystemTimer_ms)
 #define Check_Busy()	(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_4))
