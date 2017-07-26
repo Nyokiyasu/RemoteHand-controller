@@ -340,7 +340,7 @@ void IM315TRX_SendString(char *str)
 void Bluetooth_SendRHCFrame(RHC_t *data)
 {
 	uint8_t i;
-	for (i=0;i<8;i++)	Bluetooth_SendByte(data->SensorData.Bytes[i]);
+	for (i=0;i<16;i++)	Bluetooth_SendByte(data->SensorData.Bytes[i]);
 }
 int IM315TRX_SendRHCFrame(RHC_t *data)
 {
