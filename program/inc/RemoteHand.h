@@ -52,7 +52,7 @@
 #define Check_Enable()	(GPIO_ReadInputDataBit(GPIOF,GPIO_Pin_0))
 #define Check_EmSW()	(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_15))
 /*ç\ë¢ëÃíËã` ==================================================== */
-typedef struct {
+typedef union {
 	union{
 		struct {
 			uint8_t Right_Shoulder;
