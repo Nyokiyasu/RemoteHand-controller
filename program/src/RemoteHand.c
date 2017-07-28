@@ -25,11 +25,15 @@ static int timingDelay_ms;
 uint8_t ADC_value[8];
 
 
+RHC_t studio;
+
+
 int main(void)
 {
 	/*変数定義*/
 	uint8_t mode;
 	RHC_t data;
+	int i=0;
 
 	/*メインクロックを8MHzから48MHzへ変更*/
 	RCC_PLLConfig(RCC_PLLSource_HSI_Div2,RCC_PLLMul_12);
@@ -79,6 +83,15 @@ int main(void)
 			GetSensorData(&data);
 			Conv4Bit2Ascii(&data);
 		}
+#ifdef PC_Debug
+		for (i=0;i<16;i++)
+		{
+			Bluetooth_SendByte(data.SendData[i]);
+			if(i%2)Bluetooth_SendByte(',');
+		}
+		Bluetooth_SendString("\r\n");
+#endif
+		studio = data;
 		Bluetooth_SendRHCFrame(&data);
 		IM315TRX_SendRHCFrame(&data);
 	}

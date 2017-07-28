@@ -49,7 +49,7 @@
 #define Check_ccw()		(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_9))
 #define Check_cw()		(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_8))
 #define Check_wall()	(GPIO_ReadInputDataBit(GPIOF,GPIO_Pin_0))
-#define Check_Enable()	(GPIO_ReadInputDataBit(GPIOF,GPIO_Pin_0))
+#define Check_Enable()	(GPIO_ReadInputDataBit(GPIOF,GPIO_Pin_1))
 #define Check_EmSW()	(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_15))
 /*ç\ë¢ëÃíËã` ==================================================== */
 typedef struct {
