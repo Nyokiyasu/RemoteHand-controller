@@ -9,7 +9,6 @@
 #define REMOTEHAND_H_
 
 #include "stm32f0xx.h"
-//#include "stm32f0xx_conf.h"
 
 /*ATD+繋ぎたいBlueToothのアドレスを指定*/
 #define CONNECTCOMMAND0 "ATD00019508D9CC" /*class1*/
@@ -77,8 +76,6 @@ typedef struct {
 	uint8_t SendData[16];
 } RHC_t;
 
-
-
 /* リングバッファ関係 */
 typedef struct
 {
@@ -89,7 +86,7 @@ typedef struct
 	uint8_t buff[RECV_RINGBUFF_SIZE];
 } ringBuffer_t;
 
-char FourBit2Ascii[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+
 
 /*プロトタイプ宣言 ==================================================== */
 /*DIO関係*/
