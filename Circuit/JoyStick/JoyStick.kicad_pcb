@@ -3,10 +3,10 @@
   (general
     (links 0)
     (no_connects 0)
-    (area 69.899999 86.399999 106.100001 117.600001)
+    (area 67.149999 79.599999 110.850001 123.300001)
     (thickness 1.6)
     (drawings 26)
-    (tracks 14)
+    (tracks 18)
     (zones 0)
     (modules 0)
     (nets 1)
@@ -130,6 +130,10 @@
   (gr_line (start 78.5 95.5) (end 78.5 107) (angle 90) (layer Eco2.User) (width 0.2))
   (gr_line (start 106 95.5) (end 70 95.5) (angle 90) (layer Eco2.User) (width 0.2))
 
+  (via (at 70.75 101.45) (size 1.6) (drill 0.8) (layers F.Cu B.Cu) (net 0))
+  (via (at 89 119.7) (size 1.6) (drill 0.8) (layers F.Cu B.Cu) (net 0))
+  (via (at 107.25 101.45) (size 1.6) (drill 0.8) (layers F.Cu B.Cu) (net 0))
+  (via (at 89 83.2) (size 1.6) (drill 0.8) (layers F.Cu B.Cu) (net 0))
   (via (at 99.6 103.9) (size 1.4) (drill 0.8) (layers F.Cu B.Cu) (net 0))
   (via (at 99.6 101.4) (size 1.4) (drill 0.8) (layers F.Cu B.Cu) (net 0))
   (via (at 99.6 98.9) (size 1.4) (drill 0.8) (layers F.Cu B.Cu) (net 0))
