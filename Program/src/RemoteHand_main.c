@@ -76,8 +76,8 @@ int main(void)
 			if(i%2)Bluetooth_SendByte(',');
 		}
 		Bluetooth_SendString("\r\n");
-#endif
 		studio = data;
+#endif
 		Bluetooth_SendRHCFrame(&data);
 		IM315TRX_SendRHCFrame(&data);
 	}
