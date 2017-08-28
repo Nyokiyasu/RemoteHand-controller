@@ -501,9 +501,9 @@ Wire Wire Line
 	10450 5100 10000 5100
 Wire Wire Line
 	10000 5000 10450 5000
-Text Label 2850 4800 0    60   ~ 0
-Move_Y
 Text Label 2850 4700 0    60   ~ 0
+Move_Y
+Text Label 2850 4800 0    60   ~ 0
 Move_X
 Wire Wire Line
 	2400 4700 3250 4700
@@ -515,7 +515,7 @@ U 1 1 59392826
 P 8500 3550
 F 0 "SW1" H 8650 3660 50  0000 C CNN
 F 1 "EmSW" H 8500 3470 50  0000 C CNN
-F 2 "YASU:XA_2Pin" H 8500 3550 50  0001 C CNN
+F 2 "YASU:XA_2Pin_LP" H 8500 3550 50  0001 C CNN
 F 3 "" H 8500 3550 50  0000 C CNN
 	1    8500 3550
 	0    -1   -1   0   
@@ -563,12 +563,12 @@ $EndComp
 $Comp
 L SW_DIP_x4 S1
 U 1 1 593A8DBA
-P 1050 5750
-F 0 "S1" H 1050 5500 50  0000 C CNN
-F 1 "SW_DIP_x4" H 1050 6000 50  0000 C CNN
-F 2 "Buttons_Switches_THT:SW_DIP_x4_W7.62mm_Slide" H 1000 5750 50  0001 C CNN
-F 3 "" H 1000 5750 50  0000 C CNN
-	1    1050 5750
+P 1050 5850
+F 0 "S1" H 1050 5600 50  0000 C CNN
+F 1 "SW_DIP_x4" H 1050 6100 50  0000 C CNN
+F 2 "Buttons_Switches_THT:SW_DIP_x4_W7.62mm_Slide" H 1000 5850 50  0001 C CNN
+F 3 "" H 1000 5850 50  0000 C CNN
+	1    1050 5850
 	-1   0    0    -1  
 $EndComp
 $Comp
@@ -617,8 +617,8 @@ Wire Wire Line
 Connection ~ 1900 5900
 Connection ~ 2050 5800
 Connection ~ 2200 5700
-NoConn ~ 1350 5600
-NoConn ~ 750  5600
+NoConn ~ 1350 6000
+NoConn ~ 750  6000
 Wire Wire Line
 	700  5900 750  5900
 Wire Wire Line
@@ -687,8 +687,8 @@ S 1700 4600 700  300
 U 593D982B
 F0 "RHand" 60
 F1 "Right_hand.sch" 60
-F2 "Joy_X" O R 2400 4700 60 
-F3 "Joy_Y" O R 2400 4800 60 
+F2 "Joy_X" O R 2400 4800 60 
+F3 "Joy_Y" O R 2400 4700 60 
 F4 "SW" O L 1700 4800 60 
 $EndSheet
 $Sheet
