@@ -92,7 +92,7 @@ F 3 "" H 4950 2750 50  0000 C CNN
 $EndComp
 Wire Wire Line
 	4950 2600 4950 2550
-Text HLabel 5150 2950 2    60   Output ~ 0
+Text HLabel 5150 3050 2    60   Output ~ 0
 Joy_X
 Wire Wire Line
 	4650 2950 5150 2950
@@ -117,7 +117,7 @@ Wire Wire Line
 	4650 3050 5150 3050
 Wire Wire Line
 	4650 3150 5150 3150
-Text HLabel 5150 3050 2    60   Output ~ 0
+Text HLabel 5150 2950 2    60   Output ~ 0
 Joy_Y
 Text HLabel 5150 3150 2    60   Output ~ 0
 SW
