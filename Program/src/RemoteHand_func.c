@@ -40,11 +40,11 @@ void Bluetooth_USART_init(void)
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
 
 	GPIO_StructInit(&GPIO_InitStructure);
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2|GPIO_Pin_3;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2|GPIO_Pin_15;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
 	GPIO_Init(GPIOA,&GPIO_InitStructure);
 	GPIO_PinAFConfig(GPIOA,GPIO_PinSource2,GPIO_AF_1);
-	GPIO_PinAFConfig(GPIOA,GPIO_PinSource3,GPIO_AF_1);
+	GPIO_PinAFConfig(GPIOA,GPIO_PinSource15,GPIO_AF_1);
 
 	USART_StructInit(&USART_InitStructure);
 	USART_Init(USART2,&USART_InitStructure);
@@ -369,9 +369,9 @@ void Switches_init(void)
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOF, ENABLE);
 
-	/*CW&CCW&EmSW*/
+	/*EmSW*/
 	GPIO_StructInit(&init_gpio);
-	init_gpio.GPIO_Pin = GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_15;	//
+	init_gpio.GPIO_Pin = GPIO_Pin_8;	//
 	init_gpio.GPIO_Mode = GPIO_Mode_IN;
 	GPIO_Init(GPIOA,&init_gpio);
 	/*Enable&Wall*/
@@ -458,9 +458,9 @@ void GetSensorData(RHC_t *data)
 	data->SensorData.Sepalate.Left_wrist	= ADC_value[L_WRIST_NUM];
 	data->SensorData.Sepalate.Joy_X			= ADC_value[JOY_X_NUM]>>4;
 	data->SensorData.Sepalate.Joy_Y			= ADC_value[JOY_Y_NUM]>>4;
+	data->SensorData.Sepalate.Rotation		= ADC_value[JOY_ROT_NUM]>>4;
 	data->SensorData.Sepalate.Wall			= Check_wall();
-	data->SensorData.Sepalate.CCW			= Check_ccw();
-	data->SensorData.Sepalate.CW			= Check_cw();
+	data->SensorData.Sepalate.Enable		= Check_Enable();
 }
 
 

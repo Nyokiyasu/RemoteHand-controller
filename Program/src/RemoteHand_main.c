@@ -64,7 +64,7 @@ int main(void)
 
 	while(1)
 	{
-		if(!Check_Enable())
+		if(!Check_EmSW())
 		{
 			GetSensorData(&data);
 			Conv4Bit2Ascii(&data);
