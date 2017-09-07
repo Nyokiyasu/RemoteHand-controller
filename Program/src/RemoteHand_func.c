@@ -19,7 +19,7 @@ static int timingDelay_ms;
 
 //ADCÇÃïœä∑åãâ Ç™DMAÇ…ÇÊÇ¡Çƒë„ì¸Ç≥ÇÍÇÈ
 //JoyX,Y,LeftU,V,W,RightU,V,WÇÃèáî‘Ç…äiî[Ç≥ÇÍÇƒÇ¢ÇÈ
-uint8_t ADC_value[8];
+uint8_t ADC_value[9];
 
 char FourBit2Ascii[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
 
@@ -402,7 +402,7 @@ void ADCPort_init(void)
 
 	/*GPIOÇÃèâä˙âª*/
 	GPIO_StructInit(&GPIO_InitStructure);
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7;	//
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7;	//
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;
 	GPIO_Init(GPIOA,&GPIO_InitStructure);
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1;
@@ -416,12 +416,12 @@ void ADCPort_init(void)
 	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&ADC1->DR;
 	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)&ADC_value[0];
 	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
-	DMA_InitStructure.DMA_BufferSize = 8;
+	DMA_InitStructure.DMA_BufferSize = 9;
 	DMA_InitStructure.DMA_MemoryInc =  DMA_MemoryInc_Enable;
 	DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
 	DMA_InitStructure.DMA_Priority = DMA_Priority_VeryHigh;
 	DMA_Init(DMA1_Channel1,&DMA_InitStructure);
-	DMA_SetCurrDataCounter(DMA1_Channel1,8);
+	DMA_SetCurrDataCounter(DMA1_Channel1,9);
 	DMA_Cmd(DMA1_Channel1,ENABLE);
 
 	/*ADCÇÃèâä˙âª*/
@@ -433,6 +433,7 @@ void ADCPort_init(void)
 
 	ADC_ChannelConfig(ADC1, ADC_Channel_0 , ADC_SampleTime_41_5Cycles);
 	ADC_ChannelConfig(ADC1, ADC_Channel_1 , ADC_SampleTime_41_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_3 , ADC_SampleTime_41_5Cycles);
 	ADC_ChannelConfig(ADC1, ADC_Channel_4 , ADC_SampleTime_41_5Cycles);
 	ADC_ChannelConfig(ADC1, ADC_Channel_5 , ADC_SampleTime_41_5Cycles);
 	ADC_ChannelConfig(ADC1, ADC_Channel_6 , ADC_SampleTime_41_5Cycles);
