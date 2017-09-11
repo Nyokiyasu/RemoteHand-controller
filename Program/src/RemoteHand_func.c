@@ -369,6 +369,8 @@ void Switches_init(void)
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOF, ENABLE);
 
+	RCC_HSEConfig(RCC_HSE_OFF);
+
 	/*EmSW*/
 	GPIO_StructInit(&init_gpio);
 	init_gpio.GPIO_Pin = GPIO_Pin_8;	//
@@ -431,15 +433,15 @@ void ADCPort_init(void)
 	ADC_Init(ADC1,&ADC_InitStructure);
 //	ADC_ContinuousModeCmd(ADC1,ENABLE);
 
-	ADC_ChannelConfig(ADC1, ADC_Channel_0 , ADC_SampleTime_41_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_1 , ADC_SampleTime_41_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_3 , ADC_SampleTime_41_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_4 , ADC_SampleTime_41_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_5 , ADC_SampleTime_41_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_6 , ADC_SampleTime_41_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_7 , ADC_SampleTime_41_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_8 , ADC_SampleTime_41_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_9 , ADC_SampleTime_41_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_0 , ADC_SampleTime_55_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_1 , ADC_SampleTime_55_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_3 , ADC_SampleTime_55_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_4 , ADC_SampleTime_55_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_5 , ADC_SampleTime_55_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_6 , ADC_SampleTime_55_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_7 , ADC_SampleTime_55_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_8 , ADC_SampleTime_55_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_9 , ADC_SampleTime_55_5Cycles);
 
 	ADC_DMARequestModeConfig(ADC1,ADC_DMAMode_Circular);
 	ADC_DMACmd(ADC1,ENABLE);
