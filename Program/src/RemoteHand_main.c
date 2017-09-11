@@ -10,9 +10,17 @@
 
 
 #include "RemoteHand.h"
+//#define PC_Debug
+#define Main
 
 /*グローバル変数 ==================================================== */
 RHC_t studio;
+uint8_t R_Enable;
+uint8_t L_Enable;
+uint8_t Joyx;
+uint8_t Joyy;
+uint8_t Rot;
+
 
 
 int main(void)
@@ -20,6 +28,7 @@ int main(void)
 	/*変数定義*/
 	uint8_t mode;
 	RHC_t data;
+	int i;
 
 	/*メインクロックを8MHzから48MHzへ変更*/
 	RCC_PLLConfig(RCC_PLLSource_HSI_Div2,RCC_PLLMul_12);
@@ -27,11 +36,12 @@ int main(void)
 	RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
 
 	/*初期化関数群*/
+
 	DipSW_init();
 	Switches_init();
 	ADCPort_init();
 	SysTick_Config(48000);	//systickTimerを1msに設定
-	IM315TRX_USART_init();
+//	IM315TRX_USART_init();
 	Bluetooth_USART_init();
 
 	mode = DipSW_read();
@@ -64,11 +74,11 @@ int main(void)
 
 	while(1)
 	{
-		if(!Check_EmSW())
-		{
+//		if(!Check_EmSW())
+//		{
 			GetSensorData(&data);
 			Conv4Bit2Ascii(&data);
-		}
+//		}
 #ifdef PC_Debug
 		for (i=0;i<16;i++)
 		{
@@ -76,10 +86,19 @@ int main(void)
 			if(i%2)Bluetooth_SendByte(',');
 		}
 		Bluetooth_SendString("\r\n");
-		studio = data;
 #endif
-		Bluetooth_SendRHCFrame(&data);
+#ifdef	studio_Debug
+		studio = data;
+		Rot	= data.SensorData.Sepalate.Rotation;
+		Joyx = data.SensorData.Sepalate.Joy_X;
+		Joyy = data.SensorData.Sepalate.Joy_Y;
+		R_Enable = GPIO_ReadInputDataBit(GPIOF,GPIO_Pin_0);
+		L_Enable = GPIO_ReadInputDataBit(GPIOF,GPIO_Pin_1);
+#endif
+
+//		Bluetooth_SendRHCFrame(&data);
 		IM315TRX_SendRHCFrame(&data);
+
 	}
 
 }
