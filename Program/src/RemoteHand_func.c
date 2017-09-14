@@ -369,16 +369,17 @@ void Switches_init(void)
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOF, ENABLE);
 
+	//PortFのクロック入力機能をOFF
 	RCC_HSEConfig(RCC_HSE_OFF);
 
 	/*EmSW*/
 	GPIO_StructInit(&init_gpio);
-	init_gpio.GPIO_Pin = GPIO_Pin_8;	//
+	init_gpio.GPIO_Pin = GPIO_Pin_8;
 	init_gpio.GPIO_Mode = GPIO_Mode_IN;
 	GPIO_Init(GPIOA,&init_gpio);
-	/*Enable&Wall*/
+	/*LSW&RSW*/
 	GPIO_StructInit(&init_gpio);
-	init_gpio.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1;	//
+	init_gpio.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1;
 	init_gpio.GPIO_Mode = GPIO_Mode_IN;
 	GPIO_Init(GPIOF,&init_gpio);
 
@@ -433,15 +434,15 @@ void ADCPort_init(void)
 	ADC_Init(ADC1,&ADC_InitStructure);
 //	ADC_ContinuousModeCmd(ADC1,ENABLE);
 
-	ADC_ChannelConfig(ADC1, ADC_Channel_0 , ADC_SampleTime_55_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_1 , ADC_SampleTime_55_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_3 , ADC_SampleTime_55_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_4 , ADC_SampleTime_55_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_5 , ADC_SampleTime_55_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_6 , ADC_SampleTime_55_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_7 , ADC_SampleTime_55_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_8 , ADC_SampleTime_55_5Cycles);
-	ADC_ChannelConfig(ADC1, ADC_Channel_9 , ADC_SampleTime_55_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_0 , ADC_SampleTime_28_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_1 , ADC_SampleTime_28_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_3 , ADC_SampleTime_28_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_4 , ADC_SampleTime_28_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_5 , ADC_SampleTime_28_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_6 , ADC_SampleTime_28_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_7 , ADC_SampleTime_28_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_8 , ADC_SampleTime_28_5Cycles);
+	ADC_ChannelConfig(ADC1, ADC_Channel_9 , ADC_SampleTime_28_5Cycles);
 
 	ADC_DMARequestModeConfig(ADC1,ADC_DMAMode_Circular);
 	ADC_DMACmd(ADC1,ENABLE);
@@ -461,8 +462,8 @@ void GetSensorData(RHC_t *data)
 	data->SensorData.Sepalate.Joy_X			= ADC_value[JOY_X_NUM]>>4;
 	data->SensorData.Sepalate.Joy_Y			= ADC_value[JOY_Y_NUM]>>4;
 	data->SensorData.Sepalate.Rotation		= ADC_value[JOY_ROT_NUM]>>4;
-	data->SensorData.Sepalate.Wall			= Check_wall();
-	data->SensorData.Sepalate.Enable		= Check_Enable();
+	data->SensorData.Sepalate.RSW			= Check_LSW();
+	data->SensorData.Sepalate.LSW			= Check_RSW();
 }
 
 

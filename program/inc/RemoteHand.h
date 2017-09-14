@@ -43,11 +43,12 @@
 #define LV	4
 #define LW	5
 
+#define STATIC_JOYPOS 8
 
 #define SystemTimer_ms_Check()		(gSystemTimer_ms)
 #define Check_Busy()	(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_4))
-#define Check_wall()	(GPIO_ReadInputDataBit(GPIOF,GPIO_Pin_0))
-#define Check_Enable()	(GPIO_ReadInputDataBit(GPIOF,GPIO_Pin_1))
+#define Check_LSW()		!(GPIO_ReadInputDataBit(GPIOF,GPIO_Pin_1))
+#define Check_RSW()		!(GPIO_ReadInputDataBit(GPIOF,GPIO_Pin_0))
 #define Check_EmSW()	(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_8))
 /*ç\ë¢ëÃíËã` ==================================================== */
 typedef struct {
@@ -61,8 +62,8 @@ typedef struct {
 			uint8_t Left_wrist;
 			uint8_t Joy_X		:4;
 			uint8_t Joy_Y		:4;
-			uint8_t Wall		:1;
-			uint8_t Enable		:1;
+			uint8_t LSW			:1;
+			uint8_t RSW			:1;
 			uint8_t Reserved	:2;
 			uint8_t Rotation	:4;
 		} Sepalate;
