@@ -23,9 +23,11 @@ uint8_t Joyx;
 uint8_t Joyy;
 uint8_t Rot;
 #endif
-#ifdef PCDebug
+#ifdef PC_Debug
 int sendcounter;
 #endif
+
+int Bluetooth_sendtiming;
 
 int main(void)
 {
@@ -89,13 +91,16 @@ int main(void)
 //			data.SensorData.Sepalate.RSW = DISABLE;
 //		}
 		Conv4Bit2Ascii(&data);
-#ifdef PC_Debug
-		for (sendcounter=0;sendcounter<16;sendcounter++)
+		if(!Bluetooth_sendtiming)
 		{
-			Bluetooth_SendByte(data.SendData[sendcounter]);
-			if(sendcounter%2)Bluetooth_SendByte(',');
-		}
-		Bluetooth_SendString("\r\n");
+#ifdef PC_Debug
+
+			for (sendcounter=0;sendcounter<16;sendcounter++)
+			{
+				Bluetooth_SendByte(data.SendData[sendcounter]);
+				if(sendcounter%2)Bluetooth_SendByte(',');
+			}
+			Bluetooth_SendString("\r\n");
 #endif
 #ifdef	Studio_Debug
 		studio = data;
@@ -105,8 +110,9 @@ int main(void)
 		R_Enable = Check_RSW();;
 		L_Enable = Check_LSW();
 #endif
-
-		Bluetooth_SendRHCFrame(&data);
+			Bluetooth_SendRHCFrame(&data);
+			Bluetooth_sendtiming = 30;
+		}
 //		IM315TRX_SendRHCFrame(&data);
 
 	}

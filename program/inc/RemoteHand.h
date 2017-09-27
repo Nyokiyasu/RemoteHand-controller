@@ -86,6 +86,7 @@ typedef struct
 	uint8_t buff[RECV_RINGBUFF_SIZE];
 } ringBuffer_t;
 
+extern int Bluetooth_sendtiming;
 
 
 /*プロトタイプ宣言 ==================================================== */

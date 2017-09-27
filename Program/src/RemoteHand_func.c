@@ -17,6 +17,7 @@ int gSystemTimer_ms = 0;
 // delay関数のためのカウント値
 static int timingDelay_ms;
 
+
 //ADCの変換結果がDMAによって代入される
 //JoyX,Y,LeftU,V,W,RightU,V,Wの順番に格納されている
 uint8_t ADC_value[9];
@@ -517,6 +518,7 @@ void SysTick_Handler(void)
 {
 	gSystemTimer_ms++;
 	if(timingDelay_ms)	timingDelay_ms--;
+	if(Bluetooth_sendtiming) Bluetooth_sendtiming--;
 }
 
 /* -------------------------------------------------
