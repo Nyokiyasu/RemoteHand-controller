@@ -79,15 +79,15 @@ int main(void)
 
 	while(1)
 	{
-		if(!Check_EmSW())	GetSensorData(&data);
-		else
-		{
-			data.SensorData.Sepalate.Joy_X = STATIC_JOYPOS;
-			data.SensorData.Sepalate.Joy_Y = STATIC_JOYPOS;
-			data.SensorData.Sepalate.Rotation = STATIC_JOYPOS;
-			data.SensorData.Sepalate.LSW = DISABLE;
-			data.SensorData.Sepalate.RSW = DISABLE;
-		}
+		/*if(!Check_EmSW())*/	GetSensorData(&data);
+//		else
+//		{
+//			data.SensorData.Sepalate.Joy_X = STATIC_JOYPOS;
+//			data.SensorData.Sepalate.Joy_Y = STATIC_JOYPOS;
+//			data.SensorData.Sepalate.Rotation = STATIC_JOYPOS;
+//			data.SensorData.Sepalate.LSW = DISABLE;
+//			data.SensorData.Sepalate.RSW = DISABLE;
+//		}
 		Conv4Bit2Ascii(&data);
 #ifdef PC_Debug
 		for (sendcounter=0;sendcounter<16;sendcounter++)
@@ -97,13 +97,13 @@ int main(void)
 		}
 		Bluetooth_SendString("\r\n");
 #endif
-#ifdef	studio_Debug
+#ifdef	Studio_Debug
 		studio = data;
 		Rot	= data.SensorData.Sepalate.Rotation;
 		Joyx = data.SensorData.Sepalate.Joy_X;
 		Joyy = data.SensorData.Sepalate.Joy_Y;
-		R_Enable = Check_LSW;;
-		L_Enable = Check_LSW;
+		R_Enable = Check_RSW();;
+		L_Enable = Check_LSW();
 #endif
 
 		Bluetooth_SendRHCFrame(&data);
