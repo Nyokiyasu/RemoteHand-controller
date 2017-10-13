@@ -10,13 +10,10 @@
 /*グローバル変数 ==================================================== */
 //USART受信用のリングバッファ
 static ringBuffer_t Bluetooth_buffer, IM315TRX_buffer;
-
 // システムタイマ，1msごとに1ずつ増加する．
 int gSystemTimer_ms = 0;
-
 // delay関数のためのカウント値
 static int timingDelay_ms;
-
 
 //ADCの変換結果がDMAによって代入される
 //JoyX,Y,LeftU,V,W,RightU,V,Wの順番に格納されている

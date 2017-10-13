@@ -43,7 +43,8 @@
 #define LV	4
 #define LW	5
 
-#define STATIC_JOYPOS 8
+#define STATIC_JOYPOS	8
+#define STATIC_JOINTPOS	128
 
 #define SystemTimer_ms_Check()		(gSystemTimer_ms)
 #define Check_Busy()	(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_4))
@@ -62,8 +63,8 @@ typedef struct {
 			uint8_t Left_wrist;
 			uint8_t Joy_X		:4;
 			uint8_t Joy_Y		:4;
-			uint8_t LSW			:1;
 			uint8_t RSW			:1;
+			uint8_t LSW			:1;
 			uint8_t Reserved	:2;
 			uint8_t Rotation	:4;
 		} Sepalate;

@@ -27,12 +27,14 @@ uint8_t Rot;
 int sendcounter;
 #endif
 
+//Blutoothが送信するのに30msかかるので待ち用
 int Bluetooth_sendtiming;
 
 int main(void)
 {
 	/*変数定義*/
 	uint8_t mode;
+	uint8_t counter;
 	RHC_t data;
 
 	/*メインクロックを8MHzから48MHzへ変更*/
@@ -41,13 +43,25 @@ int main(void)
 	RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
 
 	/*初期化関数群*/
-
 	DipSW_init();
 	Switches_init();
 	ADCPort_init();
 	SysTick_Config(48000);	//systickTimerを1msに設定
 //	IM315TRX_USART_init();
 	Bluetooth_USART_init();
+
+	/*変数初期化*/
+	data.SensorData.Sepalate.Right_Shoulder	= STATIC_JOINTPOS;
+	data.SensorData.Sepalate.Right_Elbow	= STATIC_JOINTPOS;
+	data.SensorData.Sepalate.Right_wrist	= STATIC_JOINTPOS;
+	data.SensorData.Sepalate.Left_Shoulder	= STATIC_JOINTPOS;
+	data.SensorData.Sepalate.Left_Elbow		= STATIC_JOINTPOS;
+	data.SensorData.Sepalate.Left_wrist		= STATIC_JOINTPOS;
+	data.SensorData.Sepalate.Joy_X 			= STATIC_JOYPOS;
+	data.SensorData.Sepalate.Joy_Y 			= STATIC_JOYPOS;
+	data.SensorData.Sepalate.Rotation		= STATIC_JOYPOS;
+	data.SensorData.Sepalate.LSW 			= DISABLE;
+	data.SensorData.Sepalate.RSW 			= DISABLE;
 
 	mode = DipSW_read();
 
@@ -78,6 +92,7 @@ int main(void)
 		//デバッグ用
 		break;
 		}
+	Bluetooth_sendtiming = 30;
 
 	while(1)
 	{
@@ -91,6 +106,7 @@ int main(void)
 //			data.SensorData.Sepalate.RSW = DISABLE;
 //		}
 		Conv4Bit2Ascii(&data);
+
 		if(!Bluetooth_sendtiming)
 		{
 #ifdef PC_Debug
