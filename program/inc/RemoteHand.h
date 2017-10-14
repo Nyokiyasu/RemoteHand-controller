@@ -63,8 +63,8 @@ typedef struct {
 			uint8_t Left_wrist;
 			uint8_t Joy_X		:4;
 			uint8_t Joy_Y		:4;
-			uint8_t RSW			:1;
 			uint8_t LSW			:1;
+			uint8_t RSW			:1;
 			uint8_t Reserved	:2;
 			uint8_t Rotation	:4;
 		} Sepalate;

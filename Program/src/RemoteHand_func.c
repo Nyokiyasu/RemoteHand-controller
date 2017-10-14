@@ -460,8 +460,8 @@ void GetSensorData(RHC_t *data)
 	data->SensorData.Sepalate.Joy_X			= ADC_value[JOY_X_NUM]>>4;
 	data->SensorData.Sepalate.Joy_Y			= ADC_value[JOY_Y_NUM]>>4;
 	data->SensorData.Sepalate.Rotation		= ADC_value[JOY_ROT_NUM]>>4;
-	data->SensorData.Sepalate.RSW			= Check_LSW();
-	data->SensorData.Sepalate.LSW			= Check_RSW();
+	data->SensorData.Sepalate.RSW			= Check_RSW();
+	data->SensorData.Sepalate.LSW			= Check_LSW();
 }
 
 
